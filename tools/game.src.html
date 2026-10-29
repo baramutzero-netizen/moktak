@@ -64,7 +64,10 @@ main { flex: 1; padding-bottom: calc(var(--tabh) + env(safe-area-inset-bottom, 0
 .chant i.on { color: var(--gold); background: #000; text-shadow: 1px 1px 0 var(--goldD); }
 .chant .ln { display: inline; }
 .chant .ln + .ln::before { content: "·"; margin: 0 6px; color: var(--line); }
-.tapzone { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.tapzone { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: stretch; }
+.kinds { display: grid; grid-template-rows: repeat(4, 1fr); gap: 6px; }
+.kinds button { min-width: 76px; background: var(--panel); border: 2px solid var(--line); color: var(--muted); font-family: var(--f-sm); font-size: 12px; padding: 0 8px; }
+.kinds button[aria-checked="true"] { border-color: var(--gold); color: var(--gold); background: var(--panel2); }
 .tap { width: 100%; display: grid; place-items: center; background: var(--panel2); border: 2px solid #000; box-shadow: inset 0 0 0 2px var(--line), 3px 3px 0 #000; padding: 14px 16px; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .tap canvas { width: 156px; height: 156px; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
 .tap:active { transform: translate(2px, 2px); box-shadow: inset 0 0 0 2px var(--goldD), 1px 1px 0 #000; }
@@ -174,7 +177,8 @@ a.chip { text-decoration: none; display: inline-block; }
             <div class="venue"><span>도량 <b id="venueName">절간</b></span><span id="venueInfo">소 1 / 6 · 악단 0</span></div>
           </div>
           <div class="side">
-            <div class="tapzone"><button class="tap" id="tapBtn" aria-label="목탁 치기"><canvas id="tapIcon" width="26" height="26"></canvas></button></div>
+            <div class="tapzone"><button class="tap" id="tapBtn" aria-label="목탁 치기"><canvas id="tapIcon" width="26" height="26"></canvas></button>
+              <div class="kinds" role="radiogroup" aria-label="목탁 소리"><button role="radio" data-kind="syn">기본</button><button role="radio" data-kind="1">목탁 1</button><button role="radio" data-kind="2">목탁 2</button><button role="radio" data-kind="3">목탁 3</button></div></div>
             <div class="chant" id="chant"><span class="lbl">지금 읽는 경</span><span id="chantText"></span></div>
             <div>
               <div class="quick" id="quick"></div>
@@ -221,7 +225,7 @@ a.chip { text-decoration: none; display: inline-block; }
     <div class="opt"><span>문의하기<small class="mail" id="mailText">baramutzero@gmail.com</small></span><span class="row2"><button class="chip" id="mailCopy">주소 복사</button><a class="chip" id="mailLink" href="mailto:baramutzero@gmail.com?subject=%5B%EC%86%8C%20%EA%B7%80%EC%97%90%20%EA%B2%BD%20%EC%9D%BD%EA%B8%B0%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">메일 쓰기</a></span></div>
     <div class="opt"><span>개인정보처리방침<small>무엇을 저장하고 무엇을 보내지 않는지</small></span><button class="chip" id="privBtn2">보기</button></div>
     <div class="row2" id="resetBox"></div>
-    <p class="credit">그림과 소리는 모두 도트와 합성음으로 만들었습니다. 글꼴 갈무리(OFL).</p>
+    <p class="credit">그림과 기본 목탁·악기 소리는 도트와 합성음으로 만들었습니다. 목탁 1·2·3 소리: 김용배, 한국저작권위원회 공유마당, CC BY. 글꼴 갈무리(OFL).</p>
     <button class="chip" id="closeSet">닫기</button>
   </div>
 </div>
@@ -413,11 +417,11 @@ const QMARK = (() => { const c = document.createElement('canvas'); c.width = 24;
 const BUYABLE = NODES.filter(n => n.type !== 'root' && n.type !== 'nirvana');
 
 // ---------- state ----------
-const fresh = () => ({ v: 2, karma: 0, total: 0, taps: 0, owned: { root: 1 }, played: 0, nirvana: false, saved: Date.now(), snd: { tok: true, chant: true, band: true } });
+const fresh = () => ({ v: 2, karma: 0, total: 0, taps: 0, owned: { root: 1 }, played: 0, nirvana: false, saved: Date.now(), snd: { tok: true, chant: true, band: true, kind: 'syn' } });
 let S = fresh();
 const SAVE_KEY = 'sogwi-save-v3';
 function save() { S.saved = Date.now(); try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) {} }
-function load() { try { const r = localStorage.getItem(SAVE_KEY); if (r) { const o = Object.assign(fresh(), JSON.parse(r)); o.snd = Object.assign(fresh().snd, o.snd); delete o.cheat; delete o.snd.kind; return o; } } catch (e) {} return null; }
+function load() { try { const r = localStorage.getItem(SAVE_KEY); if (r) { const o = Object.assign(fresh(), JSON.parse(r)); o.snd = Object.assign(fresh().snd, o.snd); delete o.cheat; if (!['syn', '1', '2', '3'].includes(o.snd.kind)) o.snd.kind = 'syn'; return o; } } catch (e) {} return null; }
 
 // derived (recomputed after every purchase)
 let D = {};
@@ -481,7 +485,12 @@ function play(name, { gain = 1, rate = 1, out = 'band', at = 0 } = {}) {
   s.start(AC.currentTime + Math.max(0, at));
 }
 const chantBuf = key => G.chant.syl[key];
-const tokName = k => 'moktak' + (k % 3);
+const tokName = k => S.snd.kind === 'syn' || !S.snd.kind ? 'moktak' + (k % 3) : `mk${S.snd.kind}_${k % 3}`;
+function syncKinds() { document.querySelectorAll('.kinds button').forEach(b => b.setAttribute('aria-checked', b.dataset.kind === (S.snd.kind || 'syn'))); }
+document.querySelectorAll('.kinds button').forEach(b => b.addEventListener('click', () => {
+  initAudio(); S.snd.kind = b.dataset.kind; syncKinds(); save();
+  const go = (n = 0) => BUF[tokName(0)] ? play(tokName(0), { gain: 0.9, out: 'tok' }) : n < 20 && setTimeout(() => go(n + 1), 100); go();
+}));
 
 // ---------- scene state ----------
 let now = 0;
@@ -750,13 +759,13 @@ function iconCanvas(node) {
 
 // ---------- node tree view ----------
 const tv = $('tree'), tctx = tv.getContext('2d');
-const PITCH = 32, BOX = 28;
+const PITCH = 38, BOX = 28;   // 10px gap between nodes
 let Z = 2, panX = 0, panY = 0, selected = null, treeDirty = true;
 const bounds = NODES.reduce((b, n) => ({ x0: Math.min(b.x0, n.x), x1: Math.max(b.x1, n.x), y0: Math.min(b.y0, n.y), y1: Math.max(b.y1, n.y) }), { x0: 0, x1: 0, y0: 0, y1: 0 });
 function sizeTree() {
   const dpr = window.devicePixelRatio || 1, r = tv.getBoundingClientRect();
   tv.width = Math.max(1, Math.round(r.width * dpr)); tv.height = Math.max(1, Math.round(r.height * dpr));
-  if (!sizeTree.done) { Z = Math.max(1, Math.round(dpr * 1.25)); centerOn(NODE.root); sizeTree.done = true; }
+  if (!sizeTree.done) { Z = Math.max(2, Math.round(dpr * 2)); centerOn(NODE.root); sizeTree.done = true; }
   treeDirty = true;
 }
 function centerOn(n) { panX = Math.round(tv.width / 2 - (n.x * PITCH) * Z); panY = Math.round(tv.height / 2 - (n.y * PITCH) * Z); treeDirty = true; }
@@ -828,7 +837,7 @@ tv.addEventListener('pointerup', endPtr); tv.addEventListener('pointercancel', e
 tv.addEventListener('wheel', e => { e.preventDefault(); zoomBy(e.deltaY < 0 ? 1 : -1, e.clientX, e.clientY); }, { passive: false });
 function zoomBy(d, cx, cy) {
   const r = tv.getBoundingClientRect(), dpr = tv.width / r.width;
-  const nz = Math.max(1, Math.min(8, Z + d)); if (nz === Z) return;
+  const nz = Math.max(1, Math.min(10, Z + d)); if (nz === Z) return;
   const sx = (cx - r.left) * dpr, sy = (cy - r.top) * dpr;
   panX = Math.round(sx - (sx - panX) * nz / Z); panY = Math.round(sy - (sy - panY) * nz / Z); Z = nz; treeDirty = true;
 }
@@ -1119,7 +1128,7 @@ function start(data) {
     if (away > 30) { const gain = perTapAvg() * D.autoPerSec * away; S.karma += gain; S.total += gain; setTimeout(() => toast(`자리를 비운 사이 악단이 ${fmt(gain)} 카르마를 모았습니다`), 500); }
   }
   $('pips').innerHTML = '<i></i>'.repeat(10);
-  resetUI(); renderChant(true); fitStage(); refresh();
+  resetUI(); renderChant(true); fitStage(); refresh(); syncKinds();
   const waitImgs = () => { if (Object.values(IMG).every(i => i.complete)) { tabIcons(); treeDirty = true; } else setTimeout(waitImgs, 100); }; waitImgs();
   if (S.nirvana) { endT = 20; showEnding(); }
   if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ state: S }));

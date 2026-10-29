@@ -9,7 +9,8 @@ GROUPS = [  # key, members, venue, power per credited hit, credited hits per bar
 PERF = [(g, v, pw, hb) for (g, n, v, pw, hb) in GROUPS for _ in range(n)]
 NV = len(LIST_PER_V)
 COUNTS = dict(moktak=20, sutra=8, incense=18, ear=16)
-BAR, CLICK, END, END_WAIT = 2.4, 3, 1e68, 25
+BAR, CLICK, END, END_WAIT = 2.4, 3, 1e68, 12
+PACE = 0.5   # overall speed: 0.5 = about a 5-minute run
 
 def path():
     lv = [n for n in LIST_PER_V]; lv[0] -= 1                   # purchasable listeners per venue
@@ -59,6 +60,7 @@ def simulate(order, LSTEP):
     for j, it in enumerate(order):
         interval = 1.8 + 9.0 * (1 - j / M) ** 3   # slow start (time to tap the moktak), faster and faster later
         if j < v1: interval *= 0.7                 # reach the concert hall ~30% sooner
+        interval *= PACE
         it['cost'] = float('%.2g' % max(1, rate() * interval))
         t += interval
         ty = it['type']
