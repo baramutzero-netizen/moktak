@@ -244,7 +244,7 @@ a.chip { text-decoration: none; display: inline-block; }
     <div class="row2 shbtns">
       <button class="buy gold" id="shNative" hidden>공유하기</button>
       <button class="buy" id="shSave">이미지 저장</button>
-      <button class="chip" id="shCopy">자랑 문구 복사</button>
+      <button class="chip" id="shCopy">자랑 문구+링크 복사</button>
     </div>
     <p class="credit" id="shHint">휴대폰에서는 공유하기를 누르면 카카오톡을 고를 수 있습니다. 저장이 안 되면 그림을 길게 눌러 저장하세요.</p>
     <button class="chip" id="shClose">닫기</button>
@@ -995,7 +995,8 @@ window.addEventListener('resize', () => { fitStage(); if (activeTab === 'tree') 
 
 // ---------- share card ----------
 let shareBlob = null;
-function shareText() { return `소 귀에 경 읽기 · ${VEN[D.venue].name}에서 ${D.listeners.length}마리 소에게 경을 읽어 ${fmt(S.total)} 카르마를 모았어요.${S.nirvana ? ' 소들이 열반에 들었습니다.' : ''}`; }
+const GAME_URL = 'https://baramutzero-netizen.github.io/moktak/';
+function shareText() { return `소 귀에 경 읽기 · ${VEN[D.venue].name}에서 ${D.listeners.length}마리 소에게 경을 읽어 ${fmt(S.total)} 카르마를 모았어요.${S.nirvana ? ' 소들이 열반에 들었습니다.' : ''}\n같이 목탁 쳐요 👉 ${GAME_URL}`; }
 async function makeCard() {
   try { await document.fonts.ready; } catch (e) {}
   const c = document.createElement('canvas'); c.width = 720; c.height = 760; const x = c.getContext('2d'); x.imageSmoothingEnabled = false;
@@ -1021,7 +1022,7 @@ async function makeCard() {
     x.fillStyle = '#f4ead9'; x.font = '30px Galmuri14, sans-serif'; x.fillText(v, cx, cy + 26);
   });
   x.fillStyle = '#6cc0a4'; x.font = '24px Galmuri11, sans-serif'; x.fillText(`심우도 ${st + 1}/10 · ${STAGES[st][0]} ${STAGES[st][1]}`, 40, 688);
-  x.fillStyle = '#b8a597'; x.textAlign = 'right'; x.fillText('牛耳讀經 · 목탁 인크리멘탈', 680, 720); x.textAlign = 'left';
+  x.fillStyle = '#b8a597'; x.textAlign = 'right'; x.fillText(GAME_URL.replace('https://', ''), 680, 720); x.textAlign = 'left';
   return new Promise(res => c.toBlob(b => res(b), 'image/png'));
 }
 async function openShare() {
@@ -1034,7 +1035,7 @@ async function openShare() {
 $('shareBtn').onclick = openShare; $('endShare').onclick = () => { $('ending').hidden = true; openShare(); };
 $('shClose').onclick = () => { $('shareBox').hidden = true; if (S.nirvana) showEnding(); };
 $('shNative').onclick = async () => {
-  try { await navigator.share({ files: [new File([shareBlob], 'sogwi.png', { type: 'image/png' })], title: '소 귀에 경 읽기', text: shareText() }); }
+  try { await navigator.share({ files: [new File([shareBlob], 'sogwi.png', { type: 'image/png' })], title: '소 귀에 경 읽기', text: shareText(), url: GAME_URL }); }
   catch (e) { if (e && e.name !== 'AbortError') toast('공유를 열 수 없습니다. 이미지 저장을 이용해 주세요'); }
 };
 let dl = null; window.claude?.use?.('downloads').then(d => { dl = d; }).catch(() => {});
@@ -1051,7 +1052,7 @@ async function copyText(t, okMsg) {
   try { await navigator.clipboard.writeText(t); toast(okMsg); }
   catch (e) { toast('복사가 막혀 있습니다. 직접 선택해 복사해 주세요'); }
 }
-$('shCopy').onclick = () => copyText(shareText(), '자랑 문구를 복사했습니다. 카카오톡에 붙여 넣으세요');
+$('shCopy').onclick = () => copyText(shareText(), '자랑 문구와 게임 링크를 복사했습니다. 카카오톡에 붙여 넣으세요');
 $('mailCopy').onclick = () => copyText('baramutzero@gmail.com', '메일 주소를 복사했습니다');
 $('askBtn').onclick = () => { $('settings').hidden = false; syncSwitches(); $('mailText').scrollIntoView({ block: 'nearest' }); };
 
