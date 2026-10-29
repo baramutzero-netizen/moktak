@@ -4,7 +4,9 @@
 경은 소의 한쪽 귀로 들어가 반대쪽 귀로 빠져나오고, 그때마다 카르마가 쌓입니다.
 카르마로 수행을 쌓아 절간에서 지구까지 법회를 넓히고, 마지막에는 소들을 열반으로 이끕니다.
 
-**바로 플레이:** `index.html` 하나로 돌아갑니다. GitHub Pages를 켜면 `https://<아이디>.github.io/<저장소 이름>/` 주소로 열립니다.
+**바로 플레이:** https://baramutzero-netizen.github.io/moktak/
+
+`index.html` 한 파일로 돌아가서, 내려받아 브라우저로 열어도 됩니다.
 
 ![마당 화면](docs/screenshot-yard.png)
 
