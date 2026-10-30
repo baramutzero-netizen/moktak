@@ -7,8 +7,8 @@
   --bg: #1b1418; --panel: #271d23; --panel2: #31252c; --line: #4a3843;
   --text: #f4ead9; --muted: #b8a597; --gold: #f3c34f; --goldD: #c98a2a;
   --jade: #6cc0a4; --jadeD: #3f8f7a; --red: #c4553f; --tree: #1c1830;
-  --f-ui: "Galmuri14", "Galmuri11", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --f-sm: "Galmuri11", "Galmuri14", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-ui: "Galmuri14", "Galmuri11", "FusionSC", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-sm: "Galmuri11", "Galmuri14", "FusionSC", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --tabh: 60px;
   color-scheme: dark;
 }
@@ -160,14 +160,14 @@ a.chip { text-decoration: none; display: inline-block; }
 <div class="app">
   <header class="top">
     <div class="row">
-      <div class="brand">소 귀에 경 읽기<small id="venueTop">절간</small></div>
+      <div class="brand"><span id="brandTitle">소 귀에 경 읽기</span><small id="venueTop">절간</small></div>
       <div class="kar"><b id="karma">0</b><span id="rate">초당 0</span></div>
       <button class="iconbtn" id="menuBtn" aria-label="설정 열기">설정</button>
     </div>
   </header>
   <nav class="tabs" role="tablist">
-    <button role="tab" id="tabYard" aria-selected="true" aria-controls="yard"><canvas width="12" height="12" id="tiYard"></canvas>마당</button>
-    <button role="tab" id="tabTree" aria-selected="false" aria-controls="treeTab"><canvas width="12" height="12" id="tiTree"></canvas>수행도 <span class="badge" id="badge" hidden>0</span></button>
+    <button role="tab" id="tabYard" aria-selected="true" aria-controls="yard"><canvas width="12" height="12" id="tiYard"></canvas><span id="tabYardT">마당</span></button>
+    <button role="tab" id="tabTree" aria-selected="false" aria-controls="treeTab"><canvas width="12" height="12" id="tiTree"></canvas><span id="tabTreeT">수행도</span> <span class="badge" id="badge" hidden>0</span></button>
   </nav>
   <main>
     <section id="yard" role="tabpanel" aria-labelledby="tabYard">
@@ -175,26 +175,26 @@ a.chip { text-decoration: none; display: inline-block; }
         <div class="yardgrid">
           <div class="side">
             <div class="frame" id="frame"><canvas id="stage" width="320" height="200" aria-label="법회 마당. 누르면 목탁을 칩니다."></canvas></div>
-            <div class="venue"><span>도량 <b id="venueName">절간</b></span><span id="venueInfo">소 1 / 6 · 악단 0</span></div>
+            <div class="venue"><span><span id="venueLbl">도량</span> <b id="venueName">절간</b></span><span id="venueInfo">소 1 / 6 · 악단 0</span></div>
           </div>
           <div class="side">
             <div class="tapzone"><button class="tap" id="tapBtn" aria-label="목탁 치기"><canvas id="tapIcon" width="26" height="26"></canvas></button>
               <div class="kinds" role="radiogroup" aria-label="목탁 소리"><button role="radio" data-kind="syn" style="--sw:#c97f3d">기본</button><button role="radio" data-kind="1" style="--sw:#b8473a">목탁 1</button><button role="radio" data-kind="2" style="--sw:#5c4b55">목탁 2</button><button role="radio" data-kind="3" style="--sw:#d9a63f">목탁 3</button></div></div>
-            <div class="chant" id="chant"><span class="lbl">지금 읽는 경</span><span id="chantText"></span></div>
+            <div class="chant" id="chant"><span class="lbl" id="chantLbl">지금 읽는 경</span><span id="chantText"></span></div>
             <div>
               <div class="quick" id="quick"></div>
             </div>
             <div class="path">
-              <div class="row"><span>심우도 · 소를 찾는 열 단계</span><span id="pathN">1 / 10</span></div>
+              <div class="row"><span id="pathLbl">심우도 · 소를 찾는 열 단계</span><span id="pathN">1 / 10</span></div>
               <div class="name" id="pathName"></div>
               <div class="pips" id="pips"></div>
             </div>
             <div class="row2 actions"><button class="chip" id="shareBtn">결과 그림 공유</button><button class="chip" id="askBtn">문의하기</button></div>
             <button class="linkbtn" id="privBtn">개인정보처리방침</button>
             <div class="stats">
-              <div>두드린 횟수<b id="stTaps">0</b></div>
-              <div>쌓은 카르마<b id="stTotal">0</b></div>
-              <div>수행 시간<b id="stTime">0분</b></div>
+              <div><span id="stTapsL">두드린 횟수</span><b id="stTaps">0</b></div>
+              <div><span id="stTotalL">쌓은 카르마</span><b id="stTotal">0</b></div>
+              <div><span id="stTimeL">수행 시간</span><b id="stTime">0분</b></div>
             </div>
           </div>
         </div>
@@ -204,7 +204,7 @@ a.chip { text-decoration: none; display: inline-block; }
       <div class="treepane">
         <div class="treewrap" id="treewrap">
           <canvas id="tree" aria-label="수행도. 노드를 눌러 선택하고 끌어서 움직입니다."></canvas>
-          <div class="legend"><span><i style="border-color:#6cc0a4;background:#1f4a40"></i>수행함</span><span><i style="border-color:#f3c34f"></i>지금 가능</span><span><i style="border-color:#8b8f9c"></i>카르마 부족</span><span><i style="border-color:#4a3843"></i>잠김</span></div>
+          <div class="legend"><span><i style="border-color:#6cc0a4;background:#1f4a40"></i><span id="lgO">수행함</span></span><span><i style="border-color:#f3c34f"></i><span id="lgR">지금 가능</span></span><span><i style="border-color:#8b8f9c"></i><span id="lgP">카르마 부족</span></span><span><i style="border-color:#4a3843"></i><span id="lgL">잠김</span></span></div>
           <div class="zoom"><button id="zIn" aria-label="확대">+</button><button id="zOut" aria-label="축소">−</button><button id="zHome" aria-label="가능한 노드로 이동">◎</button></div>
         </div>
         <div class="sheet" id="sheet">
@@ -220,21 +220,22 @@ a.chip { text-decoration: none; display: inline-block; }
 <div class="overlay" id="settings" hidden>
   <div class="panel" role="dialog" aria-labelledby="setT">
     <h2 id="setT">설정</h2>
-    <div class="opt"><span>목탁 소리</span><button class="sw" role="switch" id="swTok" aria-checked="true" aria-label="목탁 소리"></button></div>
-    <div class="opt"><span>독경 소리<small>스님의 염불</small></span><button class="sw" role="switch" id="swChant" aria-checked="true" aria-label="독경 소리"></button></div>
-    <div class="opt"><span>악단 소리<small>동자승 · 메탈 밴드 · 오페라 · 오케스트라 · 법조인 · 개그팀 · 응원단 · 젬베 · 사물놀이</small></span><button class="sw" role="switch" id="swBand" aria-checked="true" aria-label="악단 소리"></button></div>
-    <div class="opt"><span>문의하기<small class="mail" id="mailText">baramutzero@gmail.com</small></span><span class="row2"><button class="chip" id="mailCopy">주소 복사</button><a class="chip" id="mailLink" href="mailto:baramutzero@gmail.com?subject=%5B%EC%86%8C%20%EA%B7%80%EC%97%90%20%EA%B2%BD%20%EC%9D%BD%EA%B8%B0%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">메일 쓰기</a></span></div>
-    <div class="opt" id="gaOpt"><span>방문 통계 보내기<small>접속자 수·평균 플레이 시간 집계 (Google Analytics)</small></span><button class="sw" role="switch" id="swGa" aria-checked="true" aria-label="방문 통계 보내기"></button></div>
-    <div class="opt"><span>개인정보처리방침<small>무엇을 저장하고 무엇을 보내지 않는지</small></span><button class="chip" id="privBtn2">보기</button></div>
+    <div class="opt"><span id="sLangT">언어</span><select id="langSel" class="chip" aria-label="Language"></select></div>
+    <div class="opt"><span id="sTokT">목탁 소리</span><button class="sw" role="switch" id="swTok" aria-checked="true" aria-label="목탁 소리"></button></div>
+    <div class="opt"><span><span id="sChantT">독경 소리</span><small id="sChantS">스님의 염불</small></span><button class="sw" role="switch" id="swChant" aria-checked="true" aria-label="독경 소리"></button></div>
+    <div class="opt"><span><span id="sBandT">악단 소리</span><small id="sBandS">동자승 · 메탈 밴드 · 오페라 · 오케스트라 · 법조인 · 개그팀 · 응원단 · 젬베 · 사물놀이</small></span><button class="sw" role="switch" id="swBand" aria-checked="true" aria-label="악단 소리"></button></div>
+    <div class="opt"><span><span id="sContactT">문의하기</span><small class="mail" id="mailText">baramutzero@gmail.com</small></span><span class="row2"><button class="chip" id="mailCopy">주소 복사</button><a class="chip" id="mailLink" href="mailto:baramutzero@gmail.com?subject=%5B%EC%86%8C%20%EA%B7%80%EC%97%90%20%EA%B2%BD%20%EC%9D%BD%EA%B8%B0%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">메일 쓰기</a></span></div>
+    <div class="opt" id="gaOpt"><span><span id="sGaT">방문 통계 보내기</span><small id="sGaS">접속자 수·평균 플레이 시간 집계 (Google Analytics)</small></span><button class="sw" role="switch" id="swGa" aria-checked="true" aria-label="방문 통계 보내기"></button></div>
+    <div class="opt"><span><span id="sPrivT">개인정보처리방침</span><small id="sPrivS">무엇을 저장하고 무엇을 보내지 않는지</small></span><button class="chip" id="privBtn2">보기</button></div>
     <div class="row2" id="resetBox"></div>
-    <p class="credit">그림과 기본 목탁·악기 소리는 도트와 합성음으로 만들었습니다. 목탁 1·2·3 소리: 김용배, 한국저작권위원회 공유마당, CC BY. 글꼴 갈무리(OFL).</p>
+    <p class="credit" id="creditT">그림과 기본 목탁·악기 소리는 도트와 합성음으로 만들었습니다. 목탁 1·2·3 소리: 김용배, 한국저작권위원회 공유마당, CC BY. 글꼴 갈무리(OFL).</p>
     <button class="chip" id="closeSet">닫기</button>
   </div>
 </div>
 <div class="overlay ending" id="ending" hidden>
   <div class="card" role="dialog" aria-labelledby="endT">
     <h2 id="endT">열반에 들다</h2>
-    <p>절간에서 시작해 콘서트장, 오페라홀, 오케스트라홀, 법원, 웃음 극장, 야구장, 초원, 서울을 지나 지구 전체가 법회장이 되었습니다. 무량대수 번 흘려들은 경이 마침내 모든 소의 마음에 닿았고, 소들은 연꽃 위에서 고요히 열반에 들었습니다.</p>
+    <p id="endText">절간에서 시작해 콘서트장, 오페라홀, 오케스트라홀, 법원, 웃음 극장, 야구장, 초원, 서울을 지나 지구 전체가 법회장이 되었습니다. 무량대수 번 흘려들은 경이 마침내 모든 소의 마음에 닿았고, 소들은 연꽃 위에서 고요히 열반에 들었습니다.</p>
     <p class="s" id="endStats"></p>
     <div class="row2"><button id="endShare">결과 그림 공유</button><button id="againBtn">다시 윤회하기</button></div>
   </div>
@@ -254,6 +255,7 @@ a.chip { text-decoration: none; display: inline-block; }
 </div>
 <div class="overlay" id="privacy" hidden>
   <div class="panel policy" role="dialog" aria-labelledby="pvT">
+    <div id="polBody">
     <h2 id="pvT" tabindex="-1">개인정보처리방침</h2>
     <p class="pmeta">시행일 2026년 10월 30일 · 소 귀에 경 읽기</p>
     <h3>1. 수집하는 개인정보</h3>
@@ -274,8 +276,9 @@ a.chip { text-decoration: none; display: inline-block; }
     <h3>7. 이용자의 권리</h3>
     <p>설정의 "처음부터 다시"나 브라우저 사이트 데이터 삭제로 기기에 저장된 진행 기록을 언제든 지울 수 있습니다. 방문 통계는 설정에서 끌 수 있습니다. 보낸 문의 메일의 열람이나 삭제는 아래 주소로 요청할 수 있습니다.</p>
     <h3>8. 문의처</h3>
+    </div>
     <p class="mailline">baramutzero@gmail.com</p>
-    <p class="pmeta">방침이 바뀌면 이 화면에 시행일과 함께 알립니다.</p>
+    <p class="pmeta" id="polChange">방침이 바뀌면 이 화면에 시행일과 함께 알립니다.</p>
     <button class="chip" id="pvClose">닫기</button>
   </div>
 </div>
@@ -325,17 +328,61 @@ function text(s, x, y, color, alpha = 1) {
   ctx.globalAlpha = 1;
 }
 
-// ---------- numbers (Korean & Buddhist large units) ----------
-const UNITS = [[1e68,'무량대수'],[1e64,'불가사의'],[1e60,'나유타'],[1e56,'아승기'],[1e52,'항하사'],[1e48,'극'],[1e44,'재'],[1e40,'정'],[1e36,'간'],[1e32,'구'],[1e28,'양'],[1e24,'자'],[1e20,'해'],[1e16,'경'],[1e12,'조'],[1e8,'억'],[1e4,'만']];
-function fmt(n) {
-  if (!isFinite(n)) return '∞';
-  if (n >= 1e72) return (n / 1e68).toExponential(1) + '무량대수';
-  for (const [u, s] of UNITS) if (n >= u) {
-    const v = n / u;
-    return (v >= 1000 ? Math.floor(v).toLocaleString('ko-KR') : v >= 100 ? Math.floor(v) : v >= 10 ? Math.floor(v * 10) / 10 : Math.floor(v * 100) / 100) + s;
+// ---------- language ----------
+const I = /*__I18N__*/null;
+const LANG_KEY = 'sogwi-lang';
+function detectLang() {
+  try { const s = localStorage.getItem(LANG_KEY); if (s && I.langs.includes(s)) return s; } catch (e) {}
+  for (const l of (navigator.languages || [navigator.language || 'ko']).map(x => String(x).toLowerCase())) {
+    if (l.startsWith('ko')) return 'ko'; if (l.startsWith('ja')) return 'ja'; if (l.startsWith('en')) return 'en';
+    if (l.startsWith('zh')) return /(tw|hk|mo|hant)/.test(l) ? 'zh-Hant' : 'zh-Hans';
   }
-  return Math.floor(n).toLocaleString('ko-KR');
+  return 'en';
 }
+let LANG = detectLang();
+const LOCALE = { ko: 'ko-KR', en: 'en-US', ja: 'ja-JP', 'zh-Hans': 'zh-CN', 'zh-Hant': 'zh-TW' };
+const num = n => Math.floor(n).toLocaleString(LOCALE[LANG]);
+function t(key, p = {}) {
+  const s = (I.ui[LANG] && I.ui[LANG][key]) ?? I.ui.ko[key] ?? key;
+  return s.replace(/\{(\w+)(?:\|(\w+))?\}/g, (m, k, f) => {
+    if (p[k] === undefined) return '';
+    const v = String(p[k]);
+    if (LANG === 'ko' && f === 'ro') return ro(v);
+    if (LANG === 'ko' && f === 'iga') return iga(v);
+    if (LANG === 'ko' && f === 'eul') return eulreul(v);
+    return v;
+  });
+}
+const venueName = i => I.venues[LANG][i];
+const listenerName = i => I.listeners[LANG][LIST[i].key][0];
+const listenerTag = i => I.listeners[LANG][LIST[i].key][1];
+const grpText = g => I.groups[LANG][g];   // [short, title, desc]
+const perfName = p => p.g === 'novice' ? t('perf_novice', { n: p.n + 1 }) : I.perf[LANG][p.key];
+const sutraName = i => I.sutra[LANG][i];
+const stageText = i => I.stages[LANG][i];
+
+// ---------- numbers (Korean & Buddhist large units) ----------
+const UNITS_KO = [[1e68,'무량대수'],[1e64,'불가사의'],[1e60,'나유타'],[1e56,'아승기'],[1e52,'항하사'],[1e48,'극'],[1e44,'재'],[1e40,'정'],[1e36,'간'],[1e32,'구'],[1e28,'양'],[1e24,'자'],[1e20,'해'],[1e16,'경'],[1e12,'조'],[1e8,'억'],[1e4,'만']];
+const BIG = { ja: ['万', '億', '兆', '京', '垓', '秭', '穣', '溝', '澗', '正', '載', '極', '恒河沙', '阿僧祇', '那由他', '不可思議', '無量大数'],
+  'zh-Hant': ['萬', '億', '兆', '京', '垓', '秭', '穰', '溝', '澗', '正', '載', '極', '恆河沙', '阿僧祇', '那由他', '不可思議', '無量大數'],
+  'zh-Hans': ['万', '亿', '兆', '京', '垓', '秭', '穰', '沟', '涧', '正', '载', '极', '恒河沙', '阿僧祇', '那由他', '不可思议', '无量大数'] };
+const EN_SFX = ['K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'UDc', 'DDc', 'TDc', 'QaDc', 'QiDc', 'SxDc', 'SpDc', 'OcDc', 'NoDc', 'Vg', 'UVg'];
+const short = v => v >= 1000 ? num(v) : v >= 100 ? Math.floor(v) : v >= 10 ? Math.floor(v * 10) / 10 : Math.floor(v * 100) / 100;
+function fmtLang(n, lang) {
+  if (!isFinite(n)) return '∞';
+  if (lang === 'en') {
+    if (n < 1e3) return Math.floor(n).toLocaleString('en-US');
+    const e = Math.min(EN_SFX.length, Math.floor(Math.log10(n) / 3));
+    return short(n / Math.pow(10, e * 3)) + EN_SFX[e - 1];
+  }
+  const units = lang === 'ko' || !BIG[lang] ? UNITS_KO : BIG[lang].map((s, i) => [Math.pow(10, 4 * (i + 1)), s]).reverse();
+  if (n >= 1e72) return (n / 1e68).toExponential(1) + units[0][1];
+  for (const [u, s] of units) if (n >= u) return short(n / u) + s;
+  return Math.floor(n).toLocaleString(LOCALE[lang] || 'ko-KR');
+}
+const fmt = n => fmtLang(n, LANG);
+// canvas floats are drawn with the bitmap font: fall back to English suffixes if a glyph is missing
+const fmtCanvas = n => { const s = fmt(n); return [...s].every(c => A.font[c] || c === ' ') ? s : fmtLang(n, 'en'); };
 
 // ---------- game data ----------
 const hasJong = w => { const c = w.charCodeAt(w.length - 1) - 0xAC00; return c >= 0 && c <= 11171 && c % 28 !== 0; };
@@ -361,7 +408,7 @@ const GROUPS = {
 };
 B.groups.forEach(g => { GROUPS[g.key].pw = g.pw; GROUPS[g.key].venue = g.venue; });
 const PERF = [];
-for (let i = 0; i < 10; i++) PERF.push({ g: 'novice', key: 'novice', name: `동자승 ${i + 1}호`, n: i, credit: [(i * 3) % 16, (i * 3 + 8) % 16] });
+for (let i = 0; i < 10; i++) PERF.push({ g: 'novice', key: 'novice', n: i, credit: [(i * 3) % 16, (i * 3 + 8) % 16] });
 [['m_drum', '드러머'], ['m_bass', '베이시스트'], ['m_rhythm', '리듬 기타'], ['m_lead', '리드 기타']].forEach(([k, n]) => PERF.push({ g: 'metal', key: k, name: n }));
 [['o_ten', '테너'], ['o_sop', '소프라노'], ['o_bar', '바리톤'], ['o_mez', '메조소프라노'], ['o_choir', '합창단']].forEach(([k, n]) => PERF.push({ g: 'opera', key: k, name: n }));
 [['r_cond', '지휘자'], ['r_vln', '바이올린'], ['r_vc', '첼로'], ['r_fl', '플루트'], ['r_hn', '호른'], ['r_timp', '팀파니']].forEach(([k, n]) => PERF.push({ g: 'orch', key: k, name: n }));
@@ -394,32 +441,41 @@ const MONK = [64, 112], MOKTAK = [92, 130], MOUTH = [82, 119];
 
 // chant script
 const CHANT = G.chant.lines.map(([name, line]) => ({ name, words: line.split(' ').map(w => [...w]) }));
+const chantShow = (tier, wi, ci) => I.chant[LANG][tier][wi][ci];
 function chantSeq(tier) {
   const seq = [];
   for (let t = 0; t <= tier; t++) CHANT[t].words.forEach((w, wi) => w.forEach((ch, ci) => seq.push({ ch, key: ch + (ci === w.length - 1 ? '_' : ''), t, wi, ci, end: ci === w.length - 1 })));
   return seq;
 }
-const STAGES = [['심우', '尋牛', '소를 찾아 나서다'], ['견적', '見跡', '소의 발자국을 보다'], ['견우', '見牛', '소를 보다'], ['득우', '得牛', '소를 얻다'], ['목우', '牧牛', '소를 길들이다'], ['기우귀가', '騎牛歸家', '소를 타고 집으로 돌아오다'], ['망우존인', '忘牛存人', '소는 잊고 사람만 남다'], ['인우구망', '人牛俱忘', '소도 사람도 모두 잊다'], ['반본환원', '返本還源', '근원으로 돌아가다'], ['입전수수', '入廛垂手', '저잣거리로 들어가 손을 드리우다']];
 
 // ---------- node tree ----------
 const NODES = []; const NODE = {};
 function addNode(n) { NODES.push(n); NODE[n.id] = n; return n; }
-const INC_T = ['선향', '백단향', '침향', '정향', '유향', '안식향', '용연향', '전단향', '우담화향'];
-const EAR_T = ['귀이개', '면봉', '귀지 흡입기', '물 세척', '초음파 세척', '이명 치료', '귀 마사지', '반야 귀청소', '천이통'];
 const ICON = { moktak: 'icon_moktak', sutra: 'icon_sutra', incense: 'icon_incense', ear: 'icon_earpick' };
 for (const n of B.nodes) {
   const m = Object.assign({}, n);
-  if (n.type === 'root') { m.name = '법회 시작'; m.icon = ['monk', 0]; }
-  else if (n.type === 'venue') { m.name = ro(VEN[n.i].name) + ' 옮기기'; m.icon = ['venue', n.i]; }
-  else if (n.type === 'listener') { m.name = LIST[n.i].name; m.icon = ['L_' + LIST[n.i].key, 0]; }
-  else if (n.type === 'perf') { m.name = PERF[n.i].name; m.icon = [PERF[n.i].key, 0]; }
-  else if (n.type === 'nirvana') { m.name = '열반에 들다'; m.icon = ['icon_lotus', 0]; }
-  else {
-    m.icon = [ICON[n.type], 0];
-    m.name = n.type === 'moktak' ? `목탁 다듬기 ${n.i + 1}` : n.type === 'sutra' ? CHANT[n.i + 1].name : n.type === 'incense' ? `${INC_T[n.tier]} 공양` : EAR_T[n.tier];
-  }
+  if (n.type === 'root') m.icon = ['monk', 0];
+  else if (n.type === 'venue') m.icon = ['venue', n.i];
+  else if (n.type === 'listener') m.icon = ['L_' + LIST[n.i].key, 0];
+  else if (n.type === 'perf') m.icon = [PERF[n.i].key, 0];
+  else if (n.type === 'nirvana') m.icon = ['icon_lotus', 0];
+  else m.icon = [ICON[n.type], 0];
   addNode(m);
 }
+function nodeName(n) {
+  switch (n.type) {
+    case 'root': return t('n_root');
+    case 'venue': return t('n_venue', { venue: venueName(n.i) });
+    case 'listener': return listenerName(n.i);
+    case 'perf': return perfName(PERF[n.i]);
+    case 'nirvana': return t('n_nirvana');
+    case 'moktak': return t('n_moktak', { n: n.i + 1 });
+    case 'sutra': return sutraName(n.i + 1);
+    case 'incense': return t('n_inc', { inc: I.inc[LANG][n.tier] });
+    case 'ear': return I.ear[LANG][n.tier];
+  }
+}
+function applyNames() { for (const n of NODES) n.name = nodeName(n); }
 // region of a node = the venue it hangs from (root counts as owned)
 for (const n of NODES) { let p = n.type === 'venue' ? NODE[n.parent] : n; while (p && p.type !== 'venue' && p.type !== 'root') p = NODE[p.parent]; n.region = p ? p.id : 'root'; }
 const hiddenNode = n => n.region !== 'root' && !S.owned[n.region];
@@ -562,7 +618,7 @@ function chantNext(at = 0, voice = 'monk') {
   const s = seq[chantIdx % seq.length];
   chantIdx = (chantIdx + 1) % seq.length;
   if (S.snd.chant) play(chantBuf(s.key), { gain: 0.7, out: 'chant', at });
-  floats.push({ x: MOUTH[0] - 2, y: MOUTH[1] - 16, vy: -10, t: -at, life: 0.9, s: s.ch, c: '#f3c34f' });
+  { const shown = chantShow(s.t, s.wi, s.ci); if ([...shown].every(c => A.font[c])) floats.push({ x: MOUTH[0] - 2, y: MOUTH[1] - 16, vy: -10, t: -at, life: 0.9, s: shown, c: '#f3c34f' }); }
   curSyl = s;
   return s;
 }
@@ -573,7 +629,7 @@ function playerTap() {
   initAudio();
   if (S.nirvana) return;
   S.taps++; monkHit = now; moktakHit = now;
-  floats.push({ x: MOKTAK[0] + 3 + Math.random() * 6, y: MOKTAK[1] - 6, vy: -18, t: 0, life: 0.5, s: '탁!', c: '#fff7d6' });
+  floats.push({ x: MOKTAK[0] + 3 + Math.random() * 6, y: MOKTAK[1] - 6, vy: -18, t: 0, life: 0.5, s: [...t('tok')].every(c => A.font[c]) ? t('tok') : 'tok!', c: '#fff7d6' });
   if (now - lastTok > 0.05) { lastTok = now; play(tokName(Math.random() * 3 | 0), { gain: 0.9, rate: 0.97 + Math.random() * 0.06, out: 'tok' }); }
   // recitation keeps its own calm pace no matter how fast the moktak is struck
   if (!D.perfs.length && now - lastPlayerChant >= CHANT_GAP && chantWait <= now) {
@@ -694,12 +750,12 @@ function credit(g) {
   if (orbs.length < 70) orbs.push({ x: cx + 24, y: cy + 8, t: 0, life: 0.9, vx: 8 + Math.random() * 10, vy: -26 - Math.random() * 10 });
   if (D.listeners.length <= 9) {
     const L = lst[g.li], fl = L.lastFloat;
-    if (fl && fl.t < 0.6 && floats.includes(fl)) { fl.v += g.v; if (g.crit) { fl.crit = true; fl.c = '#ffd75e'; } fl.s = '+' + fmt(fl.v) + (fl.crit ? '!' : ''); }
-    else { const f = { x: cx + 12, y: cy - 4, vy: -9, t: 0, life: 0.95, v: g.v, crit: g.crit, s: '+' + fmt(g.v) + (g.crit ? '!' : ''), c: g.crit ? '#ffd75e' : '#fff7d6', center: true }; floats.push(f); L.lastFloat = f; }
+    if (fl && fl.t < 0.6 && floats.includes(fl)) { fl.v += g.v; if (g.crit) { fl.crit = true; fl.c = '#ffd75e'; } fl.s = '+' + fmtCanvas(fl.v) + (fl.crit ? '!' : ''); }
+    else { const f = { x: cx + 12, y: cy - 4, vy: -9, t: 0, life: 0.95, v: g.v, crit: g.crit, s: '+' + fmtCanvas(g.v) + (g.crit ? '!' : ''), c: g.crit ? '#ffd75e' : '#fff7d6', center: true }; floats.push(f); L.lastFloat = f; }
   } else {
     const fl = herdFloat;
-    if (fl && fl.t < 0.5 && floats.includes(fl)) { fl.v += g.v; fl.s = '+' + fmt(fl.v); }
-    else { herdFloat = { x: 222, y: 42, vy: -8, t: 0, life: 1.0, v: g.v, s: '+' + fmt(g.v), c: '#fff7d6', center: true }; floats.push(herdFloat); }
+    if (fl && fl.t < 0.5 && floats.includes(fl)) { fl.v += g.v; fl.s = '+' + fmtCanvas(fl.v); }
+    else { herdFloat = { x: 222, y: 42, vy: -8, t: 0, life: 1.0, v: g.v, s: '+' + fmtCanvas(g.v), c: '#fff7d6', center: true }; floats.push(herdFloat); }
   }
 }
 
@@ -886,18 +942,18 @@ $('zHome').onclick = () => { const n = cheapestReady() || NODES.filter(n => node
 
 // ---------- node info & purchase ----------
 function nodeInfo(n) {
-  const L = n.type === 'listener' ? LIST[n.i] : null;
   switch (n.type) {
-    case 'root': return ['법회 시작', '스님 한 분과 누렁소 한 마리. 모든 수행이 여기서 갈라져 나갑니다.', ''];
-    case 'moktak': return [`목탁 다듬기 ${n.i + 1} / 20`, '목탁 소리가 한층 맑아집니다.', '모든 공덕 ×2'];
-    case 'incense': return [`${INC_T[n.tier]} 공양`, `향 공양 ${n.tier + 1}단계. 더 귀한 향일수록 연기가 진합니다.`, `모든 공덕 ×${2 + n.tier}`];
-    case 'ear': return [`귀 청소 · ${EAR_T[n.tier]}`, `귀 청소 ${n.tier + 1}단계. 귀가 뻥 뚫려 가끔 공덕이 크게 들어옵니다.`, `대박 확률 +4% · 대박 배율 ×${6 + 6 * n.tier}까지`];
-    case 'sutra': { const ch = CHANT[n.i + 1]; return [`${ch.name}`, `나무아미타불 뒤에 '${ch.words.map(w => w.join('')).join(' ')}'를 이어 읽습니다.`, `경 한 글자 공덕 ×${SUTRA_MULT}`]; }
-    case 'venue': { const v = VEN[n.i]; const nl = LIST.filter(l => l.v === n.i).length; const grp = Object.values(GROUPS).find(g => g.venue === n.i);
-      return [`${ro(v.name)} 옮기기`, `${v.name}에 새 자리 ${nl}곳이 생깁니다.${grp ? ' ' + grp.short + '도 부를 수 있습니다.' : ' 모든 원소가 소가 됩니다.'}`, `모든 공덕 ×${VENUE_MULT}`]; }
-    case 'listener': return [`${L.name}`, L.tag, `이 소의 귀: 공덕 ×${fmt(Math.pow(LSTEP, n.i))}`];
-    case 'perf': { const p = PERF[n.i], g = GROUPS[p.g]; return [`${p.name}`, `${g.short} · ${g.desc}.`, `마디마다 ${p.credit.length}번, 한 번에 목탁 ${fmt(p.pw)}번 몫`]; }
-    case 'nirvana': return ['열반에 들다', '모든 노드를 수행하면 열립니다. 무량대수 카르마를 바쳐 소들을 열반으로 이끕니다.', allBought() ? '조건 충족' : `수행 ${D.ownedCount} / ${BUYABLE.length}`];
+    case 'root': return [t('n_root'), t('n_root_d'), ''];
+    case 'moktak': return [t('n_moktak_t', { n: n.i + 1 }), t('n_moktak_d'), t('n_mul', { x: 2 })];
+    case 'incense': return [t('n_inc', { inc: I.inc[LANG][n.tier] }), t('n_inc_d', { n: n.tier + 1 }), t('n_mul', { x: 2 + n.tier })];
+    case 'ear': return [t('n_ear_t', { ear: I.ear[LANG][n.tier] }), t('n_ear_d', { n: n.tier + 1 }), t('n_ear_e', { x: 6 + 6 * n.tier })];
+    case 'sutra': { const ln = I.chant[LANG][n.i + 1].map(w => w.join(LANG === 'en' ? '-' : '')).join(' '); return [sutraName(n.i + 1), t('n_sutra_d', { line: ln }), t('n_sutra_e', { x: SUTRA_MULT })]; }
+    case 'venue': { const nl = LIST.filter(l => l.v === n.i).length; const gk = Object.keys(GROUPS).find(k => GROUPS[k].venue === n.i);
+      const extra = gk ? t('n_venue_grp', { grp: grpText(gk)[0] }) : t('n_venue_earth');
+      return [t('n_venue', { venue: venueName(n.i) }), t('n_venue_d', { venue: venueName(n.i), n: nl, extra }), t('n_mul', { x: VENUE_MULT })]; }
+    case 'listener': return [listenerName(n.i), listenerTag(n.i), t('n_list_e', { x: fmt(Math.pow(LSTEP, n.i)) })];
+    case 'perf': { const p = PERF[n.i], gt = grpText(p.g); return [perfName(p), t('n_perf_d', { grp: gt[0], desc: gt[2] }), t('n_perf_e', { n: p.credit.length, x: fmt(p.pw) })]; }
+    case 'nirvana': return [t('n_nirvana'), t('n_nirvana_d'), allBought() ? t('n_cond_ok') : t('n_cond', { a: D.ownedCount, b: BUYABLE.length })];
   }
 }
 function select(n) { selected = n; treeDirty = true; renderSheet(); }
@@ -905,16 +961,16 @@ function renderSheet() {
   const n = selected; if (!n) return;
   const st = nodeState(n);
   const hid = hiddenNode(n);
-  const [name, desc, eff] = hid ? ['???', `${ro(VEN[NODE[n.region].i].name)} 옮기면 무엇인지 드러납니다.`, ''] : nodeInfo(n);
+  const [name, desc, eff] = hid ? ['???', t('hidden_d', { venue: venueName(NODE[n.region].i) }), ''] : nodeInfo(n);
   $('sheetName').textContent = name;
-  $('sheetLv').textContent = { owned: '수행함', ready: '수행 가능', poor: '카르마 부족', locked: '잠김' }[st];
+  $('sheetLv').textContent = t('st_' + st);
   $('sheetDesc').textContent = desc; $('sheetEff').textContent = eff;
   const c = $('sheetIcon').getContext('2d'); if (hid) { c.clearRect(0, 0, 24, 24); c.drawImage(QMARK, 0, 0); } else drawIcon(c, n.icon);
   const b = $('sheetBuy');
   b.classList.toggle('gold', n.type === 'nirvana');
-  if (st === 'owned') { b.disabled = true; b.innerHTML = '수행함'; }
-  else if (st === 'locked') { b.disabled = true; b.innerHTML = n.type === 'nirvana' ? '아직' : '앞 노드 먼저'; }
-  else { b.disabled = st !== 'ready' || S.nirvana; b.innerHTML = `${fmt(nodeCost(n))}<small>카르마</small>`; }
+  if (st === 'owned') { b.disabled = true; b.textContent = t('st_owned'); }
+  else if (st === 'locked') { b.disabled = true; b.textContent = n.type === 'nirvana' ? t('b_later') : t('b_prev'); }
+  else { b.disabled = st !== 'ready' || S.nirvana; b.innerHTML = `${fmt(nodeCost(n))}<small>${t('karma')}</small>`; }
 }
 $('sheetBuy').addEventListener('click', () => { initAudio(); if (selected && buy(selected)) { const next = NODES.find(m => m.parent === selected.id && nodeState(m) !== 'owned' && m.type === selected.type); if (next) select(next); else renderSheet(); } });
 
@@ -924,10 +980,10 @@ function buy(n) {
   derive();
   if (n.type === 'nirvana') { track('nirvana', { play_seconds: Math.round(S.played), taps: S.taps }); S.nirvana = true; endT = 0; glyphs.length = 0; play('beomjong', { gain: 1, out: 'tok' }); play('m_chord', { gain: 0.4 }); play('s_jing', { gain: 0.5 }); for (const v in OPERA) play(OPERA[v][0], { gain: 0.25 }); save(); setTimeout(showEnding, 9500); switchTab('yard'); return true; }
   play('bell' + (Math.random() * 3 | 0), { gain: 0.45, out: 'tok' });
-  if (n.type === 'listener') { lst[n.i].appear = 0.6; const [x, y] = SLOTS[n.i]; for (let k = 0; k < 20; k++) dust.push({ x: x + 12, y: y + 20, vx: (Math.random() - .5) * 60, vy: -20 - Math.random() * 30, t: 0, life: 0.6 }); toast(`${iga(LIST[n.i].name)} 왔습니다`); }
-  if (n.type === 'venue') { venuePrev = venueShown; venueShown = n.i; venueWipe = 0; toast(`${ro(VEN[n.i].name)} 옮겼습니다`); track('venue_reached', { venue: VEN[n.i].key, venue_index: n.i, play_seconds: Math.round(S.played) }); }
-  if (n.type === 'sutra') { toast(`이제 ${eulreul(CHANT[n.i + 1].name)} 이어 읽습니다`); renderChant(true); }
-  if (n.type === 'perf') toast(`${PERF[n.i].name} 합류`);
+  if (n.type === 'listener') { lst[n.i].appear = 0.6; const [x, y] = SLOTS[n.i]; for (let k = 0; k < 20; k++) dust.push({ x: x + 12, y: y + 20, vx: (Math.random() - .5) * 60, vy: -20 - Math.random() * 30, t: 0, life: 0.6 }); toast(t('t_listener', { name: listenerName(n.i) })); }
+  if (n.type === 'venue') { venuePrev = venueShown; venueShown = n.i; venueWipe = 0; toast(t('t_venue', { venue: venueName(n.i) })); track('venue_reached', { venue: VEN[n.i].key, venue_index: n.i, play_seconds: Math.round(S.played) }); }
+  if (n.type === 'sutra') { toast(t('t_sutra', { name: sutraName(n.i + 1) })); renderChant(true); }
+  if (n.type === 'perf') toast(t('t_perf', { name: perfName(PERF[n.i]) }));
   save(); treeDirty = true; refresh(true);
   return true;
 }
@@ -940,9 +996,9 @@ function renderChant(force) {
   lastChantTier = D.sutra;
   const box = $('chantText'); box.innerHTML = '';
   let idx = 0;
-  for (let t = 0; t <= D.sutra; t++) {
+  for (let tt = 0; tt <= D.sutra; tt++) {
     const ln = document.createElement('span'); ln.className = 'ln';
-    CHANT[t].words.forEach(w => { const ws = document.createElement('span'); ws.className = 'w'; w.forEach(ch => { const i = document.createElement('i'); i.textContent = ch; i.dataset.k = idx++; ws.append(i); }); ln.append(ws); });
+    CHANT[tt].words.forEach((w, wi) => { const ws = document.createElement('span'); ws.className = 'w'; w.forEach((ch, ci) => { const i = document.createElement('i'); i.textContent = chantShow(tt, wi, ci) + (LANG === 'en' && ci < w.length - 1 ? '-' : ''); i.dataset.k = idx++; ws.append(i); }); ln.append(ws); });
     box.append(ln);
   }
 }
@@ -956,12 +1012,12 @@ function highlightChant() {
 let quickKey = '';
 function renderQuick() {
   const ready = NODES.filter(n => nodeState(n) === 'ready').sort((a, b) => nodeCost(a) - nodeCost(b)).slice(0, 4);
-  const key = ready.map(n => n.id).join(',');
+  const key = ready.map(n => n.id).join(',') + LANG;
   $('badge').hidden = !ready.length; $('badge').textContent = NODES.filter(n => nodeState(n) === 'ready').length;
   if (key === quickKey) return; quickKey = key;
   const q = $('quick'); q.innerHTML = '';
-  if (!ready.length) { const p = document.createElement('div'); p.className = 'qempty'; const nx = NODES.filter(n => nodeState(n) === 'poor').sort((a, b) => a.cost - b.cost)[0]; p.textContent = nx ? `다음 수행: ${nx.name} · ${fmt(nodeCost(nx))} 카르마` : '모든 수행을 마쳤습니다'; q.append(p); return; }
-  const lbl = document.createElement('span'); lbl.className = 'lbl'; lbl.textContent = '바로 수행'; q.append(lbl);
+  if (!ready.length) { const p = document.createElement('div'); p.className = 'qempty'; const nx = NODES.filter(n => nodeState(n) === 'poor').sort((a, b) => a.cost - b.cost)[0]; p.textContent = nx ? t('quick_next', { name: nx.name, cost: fmt(nodeCost(nx)) }) : t('quick_done'); q.append(p); return; }
+  const lbl = document.createElement('span'); lbl.className = 'lbl'; lbl.textContent = t('quick_label'); q.append(lbl);
   for (const n of ready) {
     const b = document.createElement('button'); b.className = 'qb';
     const c = document.createElement('canvas'); c.width = 24; c.height = 24; drawIcon(c.getContext('2d'), n.icon);
@@ -972,16 +1028,16 @@ function renderQuick() {
 let lastStage = -1;
 function refresh() {
   $('karma').textContent = fmt(S.karma);
-  $('rate').textContent = `초당 약 ${fmt(perTapAvg() * D.autoPerSec)}${D.autoPerSec ? '' : ' · 목탁을 쳐 주세요'}`;
-  $('stTaps').textContent = S.taps.toLocaleString('ko-KR'); $('stTotal').textContent = fmt(S.total);
-  const m = Math.floor(S.played / 60); $('stTime').textContent = m >= 60 ? `${Math.floor(m / 60)}시간 ${m % 60}분` : `${m}분`;
-  $('venueName').textContent = VEN[D.venue].name; $('venueTop').textContent = VEN[D.venue].name;
-  $('venueInfo').textContent = `소 ${D.listeners.length} / ${VEN[D.venue].cap} · 악단 ${D.perfs.length}`;
+  $('rate').textContent = t('rate', { x: fmt(perTapAvg() * D.autoPerSec) }) + (D.autoPerSec ? '' : t('rate_tap'));
+  $('stTaps').textContent = num(S.taps); $('stTotal').textContent = fmt(S.total);
+  const m = Math.floor(S.played / 60); $('stTime').textContent = m >= 60 ? t('time_hm', { h: Math.floor(m / 60), m: m % 60 }) : t('time_m', { m });
+  $('venueName').textContent = venueName(D.venue); $('venueTop').textContent = venueName(D.venue);
+  $('venueInfo').textContent = t('venue_info', { n: D.listeners.length, cap: VEN[D.venue].cap, p: D.perfs.length });
   const st = allBought() ? 9 : Math.min(8, Math.floor(D.ownedCount / BUYABLE.length * 9));
   if (st !== lastStage) {
-    $('pathN').textContent = `${st + 1} / 10`; $('pathName').innerHTML = `${STAGES[st][0]} ${STAGES[st][1]}<span>${STAGES[st][2]}</span>`;
+    $('pathN').textContent = `${st + 1} / 10`; { const [a, b] = stageText(st); $('pathName').textContent = a; const sp = document.createElement('span'); sp.textContent = b; $('pathName').append(sp); }
     [...$('pips').children].forEach((p, i) => p.className = i < st ? 'on' : i === st ? 'cur' : '');
-    if (lastStage >= 0 && st > lastStage) toast(`심우도 ${st + 1}단계 · ${STAGES[st][0]}`);
+    if (lastStage >= 0 && st > lastStage) toast(t('stage_toast', { n: st + 1, name: stageText(st)[0] }));
     lastStage = st;
   }
   if (venueWipe >= 1 && venueShown !== D.venue) { venuePrev = venueShown; venueShown = D.venue; venueWipe = 0; }
@@ -992,7 +1048,7 @@ let toastTimer = 0;
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2400); }
 function showEnding() {
   const m = Math.floor(S.played / 60), s = Math.floor(S.played % 60);
-  $('endStats').textContent = `수행 시간 ${m}분 ${s}초 · 목탁 ${S.taps.toLocaleString('ko-KR')}번 · 흘려들은 공덕 ${fmt(S.total)} 카르마`;
+  $('endStats').textContent = t('end_stats', { t: t('time_ms', { m, s }), taps: num(S.taps), k: fmt(S.total) });
   $('ending').hidden = false; $('againBtn').focus();
 }
 
@@ -1016,9 +1072,9 @@ $('settings').addEventListener('click', e => { if (e.target.id === 'settings') $
 function syncSwitches() { $('swTok').setAttribute('aria-checked', S.snd.tok); $('swChant').setAttribute('aria-checked', S.snd.chant); $('swBand').setAttribute('aria-checked', S.snd.band); }
 [['swTok', 'tok'], ['swChant', 'chant'], ['swBand', 'band']].forEach(([id, k]) => $(id).onclick = () => { initAudio(); S.snd[k] = !S.snd[k]; applyVolumes(); syncSwitches(); save(); });
 function resetUI() {
-  $('resetBox').innerHTML = '<button class="chip warn" id="rsBtn">처음부터 다시</button>';
+  $('resetBox').innerHTML = `<button class="chip warn" id="rsBtn">${t('reset')}</button>`;
   $('rsBtn').onclick = () => {
-    $('resetBox').innerHTML = '<span class="credit">모든 수행이 사라집니다.</span><button class="chip warn" id="rsYes">지우기</button><button class="chip" id="rsNo">취소</button>';
+    $('resetBox').innerHTML = `<span class="credit">${t('reset_warn')}</span><button class="chip warn" id="rsYes">${t('erase')}</button><button class="chip" id="rsNo">${t('cancel')}</button>`;
     $('rsYes').onclick = () => { resetGame(); resetUI(); $('settings').hidden = true; };
     $('rsNo').onclick = resetUI;
   };
@@ -1057,22 +1113,22 @@ $('swGa').onclick = () => {
   try { on ? localStorage.removeItem(GA_OFF_KEY) : localStorage.setItem(GA_OFF_KEY, '1'); } catch (e) {}
   if (GA_ID) window['ga-disable-' + GA_ID] = !on;   // gtag's own kill switch
   if (on) gaLoad();
-  syncGa(); toast(on ? '방문 통계를 보냅니다' : '방문 통계를 보내지 않습니다');
+  syncGa(); toast(on ? t('ga_on') : t('ga_off'));
 };
 
 // ---------- share card ----------
 let shareBlob = null;
 const GAME_URL = 'https://baramutzero-netizen.github.io/moktak/';
-function shareText() { return `소 귀에 경 읽기 · ${VEN[D.venue].name}에서 ${D.listeners.length}마리 소에게 경을 읽어 ${fmt(S.total)} 카르마를 모았어요.${S.nirvana ? ' 소들이 열반에 들었습니다.' : ''}\n같이 목탁 쳐요 👉 ${GAME_URL}`; }
+function shareText() { return t('share_text', { venue: venueName(D.venue), n: D.listeners.length, k: fmt(S.total), nir: S.nirvana ? t('share_nir') : '', url: GAME_URL }); }
 async function makeCard() {
   try { await document.fonts.ready; } catch (e) {}
   const c = document.createElement('canvas'); c.width = 720; c.height = 760; const x = c.getContext('2d'); x.imageSmoothingEnabled = false;
   x.fillStyle = '#1b1418'; x.fillRect(0, 0, 720, 760);
   x.fillStyle = '#271d23'; x.fillRect(0, 0, 720, 84); x.fillStyle = '#000'; x.fillRect(0, 84, 720, 4);
   x.textBaseline = 'top';
-  x.fillStyle = '#000'; x.font = '36px Galmuri14, sans-serif'; x.fillText('소 귀에 경 읽기', 42, 24);
-  x.fillStyle = '#f3c34f'; x.fillText('소 귀에 경 읽기', 40, 22);
-  x.fillStyle = '#b8a597'; x.font = '24px Galmuri11, sans-serif'; x.textAlign = 'right'; x.fillText(S.nirvana ? '열반에 들다' : VEN[D.venue].name, 680, 32); x.textAlign = 'left';
+  x.fillStyle = '#000'; x.font = '36px Galmuri14, sans-serif'; x.fillText(t('title'), 42, 24);
+  x.fillStyle = '#f3c34f'; x.fillText(t('title'), 40, 22);
+  x.fillStyle = '#b8a597'; x.font = '24px Galmuri11, sans-serif'; x.textAlign = 'right'; x.fillText(S.nirvana ? t('end_title') : venueName(D.venue), 680, 32); x.textAlign = 'left';
   // the current scene, 2x nearest-neighbour
   // after nirvana, capture the moment the light begins (halos and lotuses, before the white glow)
   const savedEnd = endT;
@@ -1082,13 +1138,13 @@ async function makeCard() {
   x.fillStyle = '#000'; x.fillRect(36, 112, 648, 408);
   x.drawImage(cv, 0, 0, W, H, 40, 116, 640, 400);
   const st = allBought() ? 9 : Math.min(8, Math.floor(D.ownedCount / BUYABLE.length * 9));
-  const rows = [['쌓은 카르마', fmt(S.total)], ['모인 소', `${D.listeners.length}마리`], ['악단', `${D.perfs.length}명`], ['수행 시간', `${Math.floor(S.played / 60)}분 ${Math.floor(S.played % 60)}초`]];
+  const rows = [[t('card_karma'), fmt(S.total)], [t('card_cows'), t('n_cows', { n: D.listeners.length })], [t('card_band'), t('n_people', { n: D.perfs.length })], [t('card_time'), t('time_ms', { m: Math.floor(S.played / 60), s: Math.floor(S.played % 60) })]];
   rows.forEach(([k, v], i) => {
     const cx = 40 + (i % 2) * 330, cy = 548 + Math.floor(i / 2) * 64;
     x.fillStyle = '#b8a597'; x.font = '24px Galmuri11, sans-serif'; x.fillText(k, cx, cy);
     x.fillStyle = '#f4ead9'; x.font = '30px Galmuri14, sans-serif'; x.fillText(v, cx, cy + 26);
   });
-  x.fillStyle = '#6cc0a4'; x.font = '24px Galmuri11, sans-serif'; x.fillText(`심우도 ${st + 1}/10 · ${STAGES[st][0]} ${STAGES[st][1]}`, 40, 688);
+  x.fillStyle = '#6cc0a4'; x.font = '24px Galmuri11, sans-serif'; x.fillText(t('card_path', { n: st + 1, stage: stageText(st)[0] }), 40, 688);
   x.fillStyle = '#b8a597'; x.textAlign = 'right'; x.fillText(GAME_URL.replace('https://', ''), 680, 720); x.textAlign = 'left';
   return new Promise(res => c.toBlob(b => res(b), 'image/png'));
 }
@@ -1103,26 +1159,26 @@ $('shareBtn').onclick = openShare; $('endShare').onclick = () => { $('ending').h
 $('shClose').onclick = () => { $('shareBox').hidden = true; if (S.nirvana) showEnding(); };
 $('shNative').onclick = async () => {
   track('share', { method: 'native' });
-  try { await navigator.share({ files: [new File([shareBlob], 'sogwi.png', { type: 'image/png' })], title: '소 귀에 경 읽기', text: shareText(), url: GAME_URL }); }
-  catch (e) { if (e && e.name !== 'AbortError') toast('공유를 열 수 없습니다. 이미지 저장을 이용해 주세요'); }
+  try { await navigator.share({ files: [new File([shareBlob], 'sogwi.png', { type: 'image/png' })], title: t('title'), text: shareText(), url: GAME_URL }); }
+  catch (e) { if (e && e.name !== 'AbortError') toast(t('share_fail')); }
 };
 let dl = null; window.claude?.use?.('downloads').then(d => { dl = d; }).catch(() => {});
 $('shSave').onclick = async () => {
   track('share', { method: 'save' });
-  const name = `소귀에경읽기_${new Date().toISOString().slice(0, 10)}.png`;
+  const name = `moktak_${new Date().toISOString().slice(0, 10)}.png`;
   if (dl) {
-    try { await dl.save({ filename: name, data: shareBlob }); toast('저장했습니다'); return; }
+    try { await dl.save({ filename: name, data: shareBlob }); toast(t('saved')); return; }
     catch (e) { if (e && e.code === 'declined') return; }
   }
-  try { const a = document.createElement('a'); a.href = $('shareImg').src; a.download = name; document.body.append(a); a.click(); a.remove(); toast('저장을 시작했습니다. 안 되면 그림을 길게 눌러 저장하세요'); }
-  catch (e) { toast('그림을 길게 눌러 저장하세요'); }
+  try { const a = document.createElement('a'); a.href = $('shareImg').src; a.download = name; document.body.append(a); a.click(); a.remove(); toast(t('save_started')); }
+  catch (e) { toast(t('longpress')); }
 };
 async function copyText(t, okMsg) {
   try { await navigator.clipboard.writeText(t); toast(okMsg); }
-  catch (e) { toast('복사가 막혀 있습니다. 직접 선택해 복사해 주세요'); }
+  catch (e) { toast(t('copy_blocked')); }
 }
-$('shCopy').onclick = () => (track('share', { method: 'copy' }), copyText(shareText(), '자랑 문구와 게임 링크를 복사했습니다. 카카오톡에 붙여 넣으세요'));
-$('mailCopy').onclick = () => copyText('baramutzero@gmail.com', '메일 주소를 복사했습니다');
+$('shCopy').onclick = () => (track('share', { method: 'copy' }), copyText(shareText(), t('copied_share')));
+$('mailCopy').onclick = () => copyText('baramutzero@gmail.com', t('copied_mail'));
 $('askBtn').onclick = () => { $('settings').hidden = false; syncSwitches(); $('mailText').scrollIntoView({ block: 'nearest' }); };
 
 const openPriv = () => { $('settings').hidden = true; $('privacy').hidden = false; const pn = $('privacy').querySelector('.panel'); pn.scrollTop = 0; $('pvT').focus({ preventScroll: true }); };
@@ -1176,6 +1232,36 @@ function drawTapIcon() {
 // tab icons
 function tabIcons() { const a = $('tiYard').getContext('2d'), b = $('tiTree').getContext('2d'); a.clearRect(0, 0, 12, 12); b.clearRect(0, 0, 12, 12); sprTo(a, 'icon_moktak', 0, 0, 0); sprTo(b, 'icon_lotus', 0, 0, 0); }
 
+// ---------- apply language to static text ----------
+const STATIC = [['brandTitle', 'title'], ['menuBtn', 'settings'], ['tabYardT', 'tab_yard'], ['tabTreeT', 'tab_tree'], ['venueLbl', 'venue_label'], ['chantLbl', 'chant_label'],
+  ['pathLbl', 'path_label'], ['shareBtn', 'share_btn'], ['askBtn', 'ask_btn'], ['privBtn', 'privacy'], ['stTapsL', 'st_taps'], ['stTotalL', 'st_total'], ['stTimeL', 'st_time'],
+  ['lgO', 'lg_owned'], ['lgR', 'lg_ready'], ['lgP', 'lg_poor'], ['lgL', 'lg_locked'], ['setT', 'settings'], ['sLangT', 's_lang'], ['sTokT', 's_tok'], ['sChantT', 's_chant'], ['sChantS', 's_chant_sub'],
+  ['sBandT', 's_band'], ['sBandS', 's_band_sub'], ['sContactT', 's_contact'], ['mailCopy', 'copy_addr'], ['mailLink', 'write_mail'], ['sGaT', 's_ga'], ['sGaS', 's_ga_sub'],
+  ['sPrivT', 'privacy'], ['sPrivS', 's_priv_sub'], ['privBtn2', 'view'], ['creditT', 'credit'], ['closeSet', 'close'], ['endT', 'end_title'], ['endText', 'end_text'], ['endShare', 'end_share'],
+  ['againBtn', 'again'], ['shT', 'share_title'], ['shNative', 'share_native'], ['shSave', 'share_save'], ['shCopy', 'share_copy'], ['shHint', 'share_hint'], ['shClose', 'close'],
+  ['pvClose', 'close'], ['polChange', 'pol_change']];
+const ARIA = [['menuBtn', 'open_settings'], ['stage', 'stage_aria'], ['tapBtn', 'tap_aria'], ['tree', 'tree_aria'], ['zIn', 'z_in'], ['zOut', 'z_out'], ['zHome', 'z_home'], ['swTok', 's_tok'], ['swChant', 's_chant'], ['swBand', 's_band'], ['swGa', 's_ga']];
+let POLICY_KO = null;
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.title = t('title');
+  for (const [id, k] of STATIC) { const el = $(id); if (el) el.textContent = t(k); }
+  for (const [id, k] of ARIA) { const el = $(id); if (el) el.setAttribute('aria-label', t(k)); }
+  document.querySelector('.kinds').setAttribute('aria-label', t('kinds_aria'));
+  document.querySelectorAll('.kinds button').forEach(b => b.textContent = b.dataset.kind === 'syn' ? t('kind_basic') : t('kind_n', { n: b.dataset.kind }));
+  if (POLICY_KO === null) POLICY_KO = $('polBody').innerHTML;
+  $('polBody').innerHTML = LANG === 'ko' ? POLICY_KO : I.policy[LANG];
+  $('shareImg').alt = t('share_title');
+  applyNames(); resetUI(); renderChant(true); quickKey = ''; lastStage = -1; treeDirty = true; refresh();
+  if (selected) renderSheet();
+  $('langSel').value = LANG;
+}
+(() => {
+  const sel = $('langSel');
+  for (const l of I.langs) { const o = document.createElement('option'); o.value = l; o.textContent = I.labels[l]; sel.append(o); }
+  sel.addEventListener('change', () => { LANG = sel.value; try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {} applyLang(); });
+})();
+
 // ---------- loop ----------
 let last = performance.now(), uiAcc = 0, saveAcc = 0;
 function frameLoop(t) {
@@ -1195,10 +1281,10 @@ function start(data) {
   derive(); venueShown = D.venue;
   if (loaded && !fromHot && !S.nirvana && D.autoPerSec > 0) {
     const away = Math.min(7200, (Date.now() - (S.saved || Date.now())) / 1000);
-    if (away > 30) { const gain = perTapAvg() * D.autoPerSec * away; S.karma += gain; S.total += gain; setTimeout(() => toast(`자리를 비운 사이 악단이 ${fmt(gain)} 카르마를 모았습니다`), 500); }
+    if (away > 30) { const gain = perTapAvg() * D.autoPerSec * away; S.karma += gain; S.total += gain; setTimeout(() => toast(t('away', { k: fmt(gain) })), 500); }
   }
   $('pips').innerHTML = '<i></i>'.repeat(10);
-  resetUI(); renderChant(true); fitStage(); refresh(); syncKinds(); syncGa(); gaLoad();
+  fitStage(); applyLang(); syncKinds(); syncGa(); gaLoad();
   const waitImgs = () => { if (Object.values(IMG).every(i => i.complete)) { tabIcons(); treeDirty = true; } else setTimeout(waitImgs, 100); }; waitImgs();
   if (S.nirvana) { endT = 20; showEnding(); }
   if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ state: S }));

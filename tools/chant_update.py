@@ -18,7 +18,7 @@ LINES = [
     ('열반경', '제행무상 시생멸법'),
 ]
 idx = json.load(open('chant_index.json'))
-syl = idx['syl']
+syl = {} if os.environ.get('REGEN') else idx['syl']
 n_new = 0
 for _, line in LINES:
     for w in line.split():

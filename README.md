@@ -24,6 +24,7 @@
 - **악단 46명:** 동자승, 메탈 밴드, 오페라, 오케스트라, 법조인(판사 의사봉·검사 "이의 있음!"), 개그팀(림샷·웃음·박수), 야구장 응원단, 젬베, 사물놀이가 같은 박자와 화음으로 연주합니다
 - **독경:** 경전 11권. 바꿀 때마다 나무아미타불 뒤에 천수경, 반야심경(색즉시공 공즉시색), 금강경(응무소주 이생기심) … 화엄경(일체유심조), 열반경(제행무상 시생멸법) 구절이 이어 붙습니다
 - **수행도:** 178개 노드가 장소별 줄기로 뻗은 노드 트리. 향 공양과 귀 청소는 뒤쪽 장소로 갈수록 상위 버전이 됩니다
+- **5개 언어:** 한국어, English, 日本語, 简体中文, 繁體中文. 브라우저 언어를 따라 자동으로 고르고 설정에서 바꿀 수 있습니다. 독경은 한국어로 들리고, 화면에는 각 언어의 한자 표기(일본어·중국어)나 로마자(영어)로 나옵니다
 - **결과 그림 공유:** 지금 장면과 기록으로 PNG 카드를 만들어 저장하거나 휴대폰 공유창(카카오톡 등)으로 보냅니다
 
 ![수행도](docs/screenshot-tree.png)
@@ -67,6 +68,7 @@ cp dist/sogwi.html ../index.html
 - 도트 그림과 기본 목탁·독경·악기 소리는 이 저장소의 스크립트로 직접 그리고 합성했습니다.
 - 목탁 1·2·3 소리: 김용배, 「목탁1」「목탁2」「목탁3」, [한국저작권위원회 공유마당](https://gongu.copyright.or.kr), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ko) — 원본에서 타격음 세 개씩 잘라내고 음량만 맞췄습니다(`assets/sound/mk1~3_*.wav`).
 - 글꼴: [갈무리(Galmuri)](https://github.com/quiple/galmuri) © Lee Minseo, SIL Open Font License 1.1 — 게임에 쓰는 글자만 잘라 넣었습니다. 라이선스 전문은 `fonts/Galmuri-OFL.txt`.
+- 간체자 보조 글꼴: [Fusion Pixel](https://github.com/TakWolf/fusion-pixel-font) © TakWolf, SIL Open Font License 1.1 — 갈무리에 없는 간체자만 잘라 넣었습니다. `fonts/FusionPixel-OFL.txt`.
 
 ## 문의
 

@@ -11,13 +11,20 @@ t_ = lambda d: np.arange(int(SR * d)) / SR
 
 # ---------------- fast time-varying resonator (block-wise lfilter) ----------------
 def res_tv(x, f, bw, blk=32):
-    y = np.empty_like(x); zi = np.zeros(2)
+    """2-pole resonator, unity gain at DC. Constant frequency: one lfilter call.
+    Moving frequency: coefficients updated every sample (block-wise updates caused audible clicks)."""
+    f = np.asarray(f, dtype=float)
     Rr = np.exp(-np.pi * bw / SR)
-    for s in range(0, len(x), blk):
-        a1 = 2 * Rr * np.cos(2 * np.pi * f[min(s, len(f) - 1)] / SR); a2 = -Rr * Rr
-        g = 1 - a1 - a2
-        y[s:s + blk], zi = lfilter([g], [1, -a1, -a2], x[s:s + blk], zi=zi)
-    return y
+    if np.ptp(f) < 1e-6:
+        a1 = 2 * Rr * np.cos(2 * np.pi * f[0] / SR); a2 = -Rr * Rr
+        return lfilter([1 - a1 - a2], [1, -a1, -a2], x)
+    a1s = (2 * Rr * np.cos(2 * np.pi * f / SR)).tolist(); a2 = -Rr * Rr
+    xs = x.tolist(); out = [0.0] * len(xs); y1 = y2 = 0.0
+    for i, v in enumerate(xs):
+        a1 = a1s[i]
+        o = (1 - a1 - a2) * v + a1 * y1 + a2 * y2
+        y2 = y1; y1 = o; out[i] = o
+    return np.array(out)
 
 def bandnoise(n, lo, hi, seed=0):
     r = np.random.default_rng(seed)
@@ -128,11 +135,19 @@ def syllable(ch, f0a=110, f0b=None, vdur=0.2, seed=0, fscale=1.0, vib=0.012, bw_
     hb, ha = butter(1, 100 / (SR / 2), 'high'); y = lfilter(hb, ha, y)
     peak = np.max(np.abs(y)) + 1e-9
     if AF:
-        fn = bandnoise(n, *fband, seed=seed); y += af * fn / (np.max(np.abs(fn)) + 1e-9) * peak * 0.45
+        # sibilant: smooth, hissy 's' (two soft resonances around 5 and 7 kHz) instead of raw band noise
+        wn = np.random.default_rng(seed + 3).standard_normal(n)
+        lo_c, hi_c = (fband[0] + fband[1]) / 2 * 0.75, (fband[0] + fband[1]) / 2 * 1.15
+        fn = 0.6 * res_tv(wn, np.full(n, lo_c), 1800) + 0.4 * res_tv(wn, np.full(n, hi_c), 2600)
+        sb, sa = butter(2, 8500 / (SR / 2)); fn = lfilter(sb, sa, fn)
+        sm = np.convolve(af, np.ones(int(0.006 * SR)) / int(0.006 * SR), 'same')     # smoother envelope
+        y += sm * fn / (np.max(np.abs(fn)) + 1e-9) * peak * 0.3
     for (bt, band, amp) in bursts:
         k = int(bt * SR); L = int(0.012 * SR)
-        b = bandnoise(L, *band, seed=seed + 7) * np.exp(-np.arange(L) / (0.003 * SR))
+        b = bandnoise(L, *band, seed=seed + 7) * np.exp(-np.arange(L) / (0.003 * SR)) * np.minimum(1, np.arange(L) / (0.0008 * SR))   # soft attack: no broadband click
         y[k:k + L] += b[: len(y[k:k + L])] / (np.max(np.abs(b)) + 1e-9) * peak * amp
+    lb, la = butter(2, 9000 / (SR / 2)); y = lfilter(lb, la, y)       # tame harsh top end
+    y[:int(0.003 * SR)] *= np.linspace(0, 1, int(0.003 * SR))         # no click at the very start
     return y
 
 # ---------------- chant script ----------------

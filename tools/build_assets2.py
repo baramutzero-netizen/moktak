@@ -43,12 +43,16 @@ idx = json.load(open('chant_index.json'))
 chars += ''.join({k[0] for k in idx['syl']})
 glyphs = bdf_glyphs('package/dist/Galmuri7.bdf', ''.join(set(chars)))
 assert not (set(chars) - set(glyphs)), set(chars) - set(glyphs)
+# other languages: chant characters, number units, onomatopoeia (kept when the pixel font has them)
+I18N = json.load(open('i18n.json'))
+extra = set(json.dumps(I18N['chant'], ensure_ascii=False)) | set('万億兆京垓秭穣溝澗正載極恒河沙阿僧祇那由他不可思議無量大数萬穰恆數亿沟涧载极议无KMBTQaiSxpOcNoDUVgdeh') | set('ポク!tok')
+glyphs.update(bdf_glyphs('package/dist/Galmuri7.bdf', ''.join(c for c in extra if c not in glyphs)))
 
 sounds = {}
 os.makedirs('snd_mp3', exist_ok=True)
 for f in sorted(os.listdir('snd')):
     name = f[:-4]; mp3 = f'snd_mp3/{name}.mp3'
-    br = '96k' if name.startswith(('op_', 'beomjong', 'm_chord', 's_jing')) else '64k'
+    br = '96k' if name.startswith(('op_', 'beomjong', 'm_chord', 's_jing', 'c_', 'j_obj', 'h_')) else '64k'
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', f'snd/{f}', '-ac', '1', '-ar', '44100', '-b:a', br, mp3], check=True)
     sounds[name] = 'data:audio/mpeg;base64,' + base64.b64encode(open(mp3, 'rb').read()).decode()
 
