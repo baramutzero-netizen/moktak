@@ -224,6 +224,7 @@ a.chip { text-decoration: none; display: inline-block; }
     <div class="opt"><span>독경 소리<small>스님의 염불</small></span><button class="sw" role="switch" id="swChant" aria-checked="true" aria-label="독경 소리"></button></div>
     <div class="opt"><span>악단 소리<small>동자승 · 메탈 밴드 · 오페라 · 오케스트라 · 법조인 · 개그팀 · 응원단 · 젬베 · 사물놀이</small></span><button class="sw" role="switch" id="swBand" aria-checked="true" aria-label="악단 소리"></button></div>
     <div class="opt"><span>문의하기<small class="mail" id="mailText">baramutzero@gmail.com</small></span><span class="row2"><button class="chip" id="mailCopy">주소 복사</button><a class="chip" id="mailLink" href="mailto:baramutzero@gmail.com?subject=%5B%EC%86%8C%20%EA%B7%80%EC%97%90%20%EA%B2%BD%20%EC%9D%BD%EA%B8%B0%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">메일 쓰기</a></span></div>
+    <div class="opt" id="gaOpt"><span>방문 통계 보내기<small>접속자 수·평균 플레이 시간 집계 (Google Analytics)</small></span><button class="sw" role="switch" id="swGa" aria-checked="true" aria-label="방문 통계 보내기"></button></div>
     <div class="opt"><span>개인정보처리방침<small>무엇을 저장하고 무엇을 보내지 않는지</small></span><button class="chip" id="privBtn2">보기</button></div>
     <div class="row2" id="resetBox"></div>
     <p class="credit">그림과 기본 목탁·악기 소리는 도트와 합성음으로 만들었습니다. 목탁 1·2·3 소리: 김용배, 한국저작권위원회 공유마당, CC BY. 글꼴 갈무리(OFL).</p>
@@ -254,20 +255,25 @@ a.chip { text-decoration: none; display: inline-block; }
 <div class="overlay" id="privacy" hidden>
   <div class="panel policy" role="dialog" aria-labelledby="pvT">
     <h2 id="pvT" tabindex="-1">개인정보처리방침</h2>
-    <p class="pmeta">시행일 2026년 10월 29일 · 소 귀에 경 읽기</p>
+    <p class="pmeta">시행일 2026년 10월 30일 · 소 귀에 경 읽기</p>
     <h3>1. 수집하는 개인정보</h3>
-    <p>이 게임은 회원 가입이나 로그인이 없으며, 이름·이메일·전화번호·위치·기기 식별자 같은 개인정보를 수집하지 않습니다. 방문 통계나 광고 추적 도구도 쓰지 않습니다.</p>
+    <p>이 게임은 회원 가입이나 로그인이 없으며, 이름·이메일·전화번호를 받지 않습니다. 다만 공식 주소(baramutzero-netizen.github.io/moktak)에서는 접속자 수와 평균 플레이 시간을 알기 위해 아래 5번의 방문 통계 도구를 씁니다. 광고 추적은 하지 않습니다.</p>
     <h3>2. 기기에만 저장되는 정보</h3>
     <p>게임 진행을 이어 하기 위해 다음 내용을 이용자의 브라우저 저장 공간(localStorage)에만 저장합니다: 카르마, 수행한 노드, 목탁을 친 횟수, 수행 시간, 마지막 저장 시각, 소리 설정. 이 정보는 서버로 전송되지 않으며 운영자도 볼 수 없습니다.</p>
     <h3>3. 결과 그림 공유</h3>
     <p>결과 그림은 이용자의 기기 안에서 만들어집니다. 저장하거나 카카오톡 등으로 공유하는 것은 이용자가 직접 선택할 때에만 이루어지며, 공유된 그림은 이용자가 고른 서비스의 정책에 따릅니다.</p>
     <h3>4. 문의 메일</h3>
     <p>문의 메일을 보내면 보낸 이메일 주소와 메일 내용이 운영자에게 전달됩니다. 이 정보는 문의에 답하는 데에만 쓰며, 답변을 마친 뒤 1년 안에 삭제합니다. 법령에 따른 경우를 제외하고 제3자에게 제공하지 않습니다.</p>
-    <h3>5. 게임을 제공하는 곳의 기록</h3>
+    <h3>5. 방문 통계 (Google Analytics)</h3>
+    <p>공식 주소에서 접속하면 Google Analytics 4가 쿠키를 이용해 다음 정보를 자동으로 수집합니다: 방문한 페이지, 접속·머문 시간, 기기·브라우저·화면 크기, 대략적인 지역(국가·도시 수준), 쿠키에 저장된 임의 식별자, 그리고 게임 진행 이벤트(게임 시작, 도달한 장소, 열반 도달과 그때까지의 플레이 시간, 결과 그림 공유 방법). 이름이나 이메일처럼 개인을 직접 알아볼 수 있는 정보는 보내지 않습니다.</p>
+    <p>목적: 접속자 수, 평균 플레이 시간, 어느 장소까지 진행하는지 같은 이용 통계를 보고 게임을 개선하기 위해서입니다. 보관 기간: Google Analytics의 데이터 보관 기간인 14개월이 지나면 자동 삭제됩니다.</p>
+    <p>국외 이전: 이 정보는 Google LLC(미국)의 서버로 접속 시점에 인터넷을 통해 전송·보관됩니다. 처리 방식은 Google의 개인정보처리방침(policies.google.com/privacy)을 따릅니다.</p>
+    <p>거부 방법: 설정의 "방문 통계 보내기"를 끄면 이후로는 아무것도 보내지 않습니다. 브라우저에서 쿠키를 차단해도 됩니다. 거부해도 게임은 똑같이 할 수 있습니다.</p>
+    <h3>6. 게임을 제공하는 곳의 기록</h3>
     <p>게임이 올라가 있는 서비스(예: GitHub Pages, Claude, 웹 호스팅 업체)는 접속 기록을 자체 정책에 따라 남길 수 있습니다. 이 기록은 게임 운영자가 수집하거나 이용하지 않습니다.</p>
-    <h3>6. 이용자의 권리</h3>
-    <p>설정의 "처음부터 다시"나 브라우저 사이트 데이터 삭제로 기기에 저장된 진행 기록을 언제든 지울 수 있습니다. 보낸 문의 메일의 열람이나 삭제는 아래 주소로 요청할 수 있습니다.</p>
-    <h3>7. 문의처</h3>
+    <h3>7. 이용자의 권리</h3>
+    <p>설정의 "처음부터 다시"나 브라우저 사이트 데이터 삭제로 기기에 저장된 진행 기록을 언제든 지울 수 있습니다. 방문 통계는 설정에서 끌 수 있습니다. 보낸 문의 메일의 열람이나 삭제는 아래 주소로 요청할 수 있습니다.</p>
+    <h3>8. 문의처</h3>
     <p class="mailline">baramutzero@gmail.com</p>
     <p class="pmeta">방침이 바뀌면 이 화면에 시행일과 함께 알립니다.</p>
     <button class="chip" id="pvClose">닫기</button>
@@ -563,6 +569,7 @@ function chantNext(at = 0, voice = 'monk') {
 let curSyl = null;
 
 function playerTap() {
+  if (!gaStarted) { gaStarted = true; track('game_start', { venue: VEN[D.venue].key }); }
   initAudio();
   if (S.nirvana) return;
   S.taps++; monkHit = now; moktakHit = now;
@@ -915,10 +922,10 @@ function buy(n) {
   if (S.nirvana || nodeState(n) !== 'ready') return false;
   const c = nodeCost(n); S.karma -= c; S.owned[n.id] = 1;
   derive();
-  if (n.type === 'nirvana') { S.nirvana = true; endT = 0; glyphs.length = 0; play('beomjong', { gain: 1, out: 'tok' }); play('m_chord', { gain: 0.4 }); play('s_jing', { gain: 0.5 }); for (const v in OPERA) play(OPERA[v][0], { gain: 0.25 }); save(); setTimeout(showEnding, 9500); switchTab('yard'); return true; }
+  if (n.type === 'nirvana') { track('nirvana', { play_seconds: Math.round(S.played), taps: S.taps }); S.nirvana = true; endT = 0; glyphs.length = 0; play('beomjong', { gain: 1, out: 'tok' }); play('m_chord', { gain: 0.4 }); play('s_jing', { gain: 0.5 }); for (const v in OPERA) play(OPERA[v][0], { gain: 0.25 }); save(); setTimeout(showEnding, 9500); switchTab('yard'); return true; }
   play('bell' + (Math.random() * 3 | 0), { gain: 0.45, out: 'tok' });
   if (n.type === 'listener') { lst[n.i].appear = 0.6; const [x, y] = SLOTS[n.i]; for (let k = 0; k < 20; k++) dust.push({ x: x + 12, y: y + 20, vx: (Math.random() - .5) * 60, vy: -20 - Math.random() * 30, t: 0, life: 0.6 }); toast(`${iga(LIST[n.i].name)} 왔습니다`); }
-  if (n.type === 'venue') { venuePrev = venueShown; venueShown = n.i; venueWipe = 0; toast(`${ro(VEN[n.i].name)} 옮겼습니다`); }
+  if (n.type === 'venue') { venuePrev = venueShown; venueShown = n.i; venueWipe = 0; toast(`${ro(VEN[n.i].name)} 옮겼습니다`); track('venue_reached', { venue: VEN[n.i].key, venue_index: n.i, play_seconds: Math.round(S.played) }); }
   if (n.type === 'sutra') { toast(`이제 ${eulreul(CHANT[n.i + 1].name)} 이어 읽습니다`); renderChant(true); }
   if (n.type === 'perf') toast(`${PERF[n.i].name} 합류`);
   save(); treeDirty = true; refresh(true);
@@ -1025,6 +1032,34 @@ function resetGame() {
 $('againBtn').addEventListener('click', resetGame);
 window.addEventListener('resize', () => { fitStage(); if (activeTab === 'tree') sizeTree(); });
 
+// ---------- analytics (Google Analytics 4, official site only, opt-out in settings) ----------
+const GA_ID = 'G-Z2K8D3XKSV';   // e.g. 'G-XXXXXXXXXX' — GA4 measurement ID; empty = no analytics at all
+const GA_HOSTS = ['baramutzero-netizen.github.io'];
+const GA_OFF_KEY = 'sogwi-ga-off';
+const gaEnabled = () => { try { return !localStorage.getItem(GA_OFF_KEY); } catch (e) { return true; } };
+const gaAllowedHere = () => !!GA_ID && GA_HOSTS.includes(location.hostname);
+let gaLoaded = false;
+function gaLoad() {
+  if (gaLoaded || !gaAllowedHere() || !gaEnabled()) return;
+  gaLoaded = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID, { anonymize_ip: true, allow_google_signals: false, allow_ad_personalization_signals: false });
+  const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID; document.head.append(s);
+}
+function track(name, params = {}) { if (gaLoaded && gaEnabled() && window.gtag) window.gtag('event', name, params); }
+let gaStarted = false;
+$('gaOpt').hidden = !gaAllowedHere();
+function syncGa() { $('swGa').setAttribute('aria-checked', gaEnabled()); }
+$('swGa').onclick = () => {
+  const on = !gaEnabled();
+  try { on ? localStorage.removeItem(GA_OFF_KEY) : localStorage.setItem(GA_OFF_KEY, '1'); } catch (e) {}
+  if (GA_ID) window['ga-disable-' + GA_ID] = !on;   // gtag's own kill switch
+  if (on) gaLoad();
+  syncGa(); toast(on ? '방문 통계를 보냅니다' : '방문 통계를 보내지 않습니다');
+};
+
 // ---------- share card ----------
 let shareBlob = null;
 const GAME_URL = 'https://baramutzero-netizen.github.io/moktak/';
@@ -1067,11 +1102,13 @@ async function openShare() {
 $('shareBtn').onclick = openShare; $('endShare').onclick = () => { $('ending').hidden = true; openShare(); };
 $('shClose').onclick = () => { $('shareBox').hidden = true; if (S.nirvana) showEnding(); };
 $('shNative').onclick = async () => {
+  track('share', { method: 'native' });
   try { await navigator.share({ files: [new File([shareBlob], 'sogwi.png', { type: 'image/png' })], title: '소 귀에 경 읽기', text: shareText(), url: GAME_URL }); }
   catch (e) { if (e && e.name !== 'AbortError') toast('공유를 열 수 없습니다. 이미지 저장을 이용해 주세요'); }
 };
 let dl = null; window.claude?.use?.('downloads').then(d => { dl = d; }).catch(() => {});
 $('shSave').onclick = async () => {
+  track('share', { method: 'save' });
   const name = `소귀에경읽기_${new Date().toISOString().slice(0, 10)}.png`;
   if (dl) {
     try { await dl.save({ filename: name, data: shareBlob }); toast('저장했습니다'); return; }
@@ -1084,7 +1121,7 @@ async function copyText(t, okMsg) {
   try { await navigator.clipboard.writeText(t); toast(okMsg); }
   catch (e) { toast('복사가 막혀 있습니다. 직접 선택해 복사해 주세요'); }
 }
-$('shCopy').onclick = () => copyText(shareText(), '자랑 문구와 게임 링크를 복사했습니다. 카카오톡에 붙여 넣으세요');
+$('shCopy').onclick = () => (track('share', { method: 'copy' }), copyText(shareText(), '자랑 문구와 게임 링크를 복사했습니다. 카카오톡에 붙여 넣으세요'));
 $('mailCopy').onclick = () => copyText('baramutzero@gmail.com', '메일 주소를 복사했습니다');
 $('askBtn').onclick = () => { $('settings').hidden = false; syncSwitches(); $('mailText').scrollIntoView({ block: 'nearest' }); };
 
@@ -1161,7 +1198,7 @@ function start(data) {
     if (away > 30) { const gain = perTapAvg() * D.autoPerSec * away; S.karma += gain; S.total += gain; setTimeout(() => toast(`자리를 비운 사이 악단이 ${fmt(gain)} 카르마를 모았습니다`), 500); }
   }
   $('pips').innerHTML = '<i></i>'.repeat(10);
-  resetUI(); renderChant(true); fitStage(); refresh(); syncKinds();
+  resetUI(); renderChant(true); fitStage(); refresh(); syncKinds(); syncGa(); gaLoad();
   const waitImgs = () => { if (Object.values(IMG).every(i => i.complete)) { tabIcons(); treeDirty = true; } else setTimeout(waitImgs, 100); }; waitImgs();
   if (S.nirvana) { endT = 20; showEnding(); }
   if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ state: S }));

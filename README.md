@@ -60,7 +60,7 @@ cp dist/sogwi.html ../index.html
 
 ## 개인정보
 
-게임은 개인정보를 모으지 않습니다. 진행 기록은 플레이하는 브라우저 안(localStorage)에만 저장되고 서버로 보내지 않습니다. 자세한 내용은 [PRIVACY.md](PRIVACY.md)에 있습니다.
+진행 기록은 플레이하는 브라우저 안(localStorage)에만 저장됩니다. 공식 주소에서는 접속자 수와 평균 플레이 시간을 보기 위해 Google Analytics 4를 쓰며, 게임 설정에서 끌 수 있습니다(`tools/game.src.html`의 `GA_ID`가 비어 있으면 아예 동작하지 않음). 자세한 내용은 [PRIVACY.md](PRIVACY.md)에 있습니다.
 
 ## 만든 것과 빌린 것
 
