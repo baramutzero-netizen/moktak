@@ -219,8 +219,60 @@ def bamboo(dark, mid, light):
     outline(im); add_face(im, ear=mid, horns='horn')
     return im
 
+def doc(paper, icon):
+    im = new(24, 24)
+    rect(im, 5, 4, 19, 23, paper); rect(im, 17, 4, 19, 23, 'milkS' if paper != 'ash' else 'stoneS')
+    for x in range(15, 19): px(im, x, 4, 'k0' if paper == 'cream' else paper)
+    rect(im, 15, 4, 16, 6, 'milkS')
+    outline(im)
+    add_face(im, ear=paper, horns='horn')
+    for y in (19, 21): rect(im, 7, y, 17, y + 1, 'ink2')
+    if icon == 'seal': rect(im, 15, 18, 19, 22, 'red'); px(im, 16, 19, 'k0'); px(im, 17, 20, 'k0')
+    if icon == 'up': over(im, ['..g..', '.ggg.', 'g.g.g', '..g..'], {'g': 'grnS'}, 10, 0)
+    if icon == 'up2': over(im, ['..b....b..', '.bbb..bbb.', 'b.b.bb.b.b', '..b....b..'], {'b': 'blueS'}, 7, 0)
+    if icon == 'check': over(im, ['.....g', '....gg', 'g..gg.', 'gggg..', '.gg...'], {'g': 'grnS'}, 9, 0)
+    if icon == 'x': over(im, ['r...r', '.r.r.', '..r..', '.r.r.', 'r...r'], {'r': 'red'}, 10, 0)
+    if icon == 'pen': over(im, ['....o', '...oy', '..oy.', '.oy..', 'kk...'], {'o': 'ink', 'y': 'yel', 'k': 'ink'}, 17, 16)
+    if icon == 'swap': over(im, ['.rrr.', 'r...r', 'r..rrr', '....r.'], {'r': 'redS'}, 9, 0)
+    return im
+
+def briefcase(c, cs):
+    im = new(24, 24)
+    rect(im, 9, 4, 15, 6, cs); rect(im, 10, 5, 14, 6, T if False else cs)
+    rect(im, 3, 6, 21, 23, c); rect(im, 3, 12, 21, 13, cs); rect(im, 11, 11, 13, 14, 'gold')
+    outline(im); add_face(im, ear=c, horns='horn')
+    return im
+
+def face(col, colS, eyes, mouth, extra):
+    im = new(24, 24)
+    for y in range(24):
+        for x in range(24):
+            if (x - 12) ** 2 + (y - 13) ** 2 <= 81: px(im, x, y, col if x + y < 30 else colS)
+    outline(im); add_face(im, ear=col, horns='horn')
+    for (x, y) in EYES:
+        rect(im, x, y, x + 2, y + 2, col)
+        if eyes == 'normal': rect(im, x, y, x + 2, y + 2, 'ink'); px(im, x + 1, y, 'k0')
+        elif eyes == 'happy': px(im, x, y + 1, 'ink'); px(im, x + 1, y, 'ink')
+        elif eyes == 'half': rect(im, x, y + 1, x + 2, y + 2, 'ink')
+        elif eyes == 'wink': (rect(im, x, y, x + 2, y + 2, 'ink') if x > 10 else rect(im, x, y + 1, x + 2, y + 2, 'ink'))
+    if mouth == 'open': rect(im, 9, 16, 15, 18, 'redS')
+    if mouth == 'smirk': px(im, 12, 17, 'ink'); px(im, 13, 17, 'ink'); px(im, 14, 16, 'ink')
+    if mouth == 'tongue': rect(im, 10, 16, 14, 17, 'ink'); rect(im, 11, 17, 13, 19, 'pink')
+    if mouth == 'smile': px(im, 9, 16, 'ink'); rect(im, 10, 17, 14, 18, 'ink'); px(im, 14, 16, 'ink')
+    if extra == 'tears': px(im, 5, 11, 'cyan'); px(im, 5, 12, 'cyan'); px(im, 18, 11, 'cyan'); px(im, 18, 12, 'cyan'); px(im, 4, 13, 'cyan'); px(im, 19, 13, 'cyan')
+    if extra == 'blush': px(im, 6, 12, 'pink'); px(im, 17, 12, 'pink')
+    if extra == 'ice': over(im, ['c.c', '.c.', 'c.c'], {'c': 'k0'}, 11, 0)
+    if extra == 'bubble': over(im, ['oooo', 'owwo', 'oooo', '.o..'], {'o': 'ink', 'w': 'shirt'}, 19, 0)
+    if extra == 'hands':
+        over(im, ['.ss', 'sss', 'ss.'], {'s': 'skin'}, 0, 17); over(im, ['ss.', 'sss', '.ss'], {'s': 'skin'}, 21, 17)
+    return im
+
 def blob(kind):
     im = new(24, 24)
+    if kind == 'plead':
+        for y in range(24):
+            for x in range(24):
+                if (x - 12) ** 2 + (y - 13) ** 2 <= 81: px(im, x, y, 'pink' if x + y < 30 else 'pinkS')
     if kind == 'note':
         for y in range(24):
             for x in range(24):
@@ -251,11 +303,14 @@ def blob(kind):
         rect(im, 4, 5, 20, 23, 'cream'); rect(im, 4, 5, 20, 6, 'org'); rect(im, 19, 5, 20, 23, 'milkS')
         text35(im, 'So', 9, 17, 'ink')
     outline(im)
-    body = {'enzyme': 'pur', 'leaf': 'grn', 'laugh': 'org', 'smile': 'yel', 'tile': 'cream', 'note': 'shirt'}[kind]
+    body = {'enzyme': 'pur', 'leaf': 'grn', 'laugh': 'org', 'smile': 'yel', 'tile': 'cream', 'note': 'shirt', 'plead': 'pink'}[kind]
     add_face(im, ear=body, horns='gold' if kind == 'smile' else 'horn')
     if kind == 'laugh':   # eyes squeezed shut (^ ^) and open laughing mouth
         for (x, y) in EYES: rect(im, x, y, x + 2, y + 2, body); px(im, x, y + 1, 'ink'); px(im, x + 1, y, 'ink')
         rect(im, 9, 16, 15, 18, 'redS')
+    if kind == 'plead':   # teary, pleading eyes
+        for (x, y) in EYES: px(im, x, y + 2, 'cyan'); px(im, x, y + 3, 'cyan')
+        over(im, ['o..o', 'oo.oo'], {'o': 'pinkS'}, 3, 19)
     if kind == 'smile':   # 염화미소: a lotus held up beside the face
         over(im, [".p.", "pLp", ".g."], {'p': 'lotus', 'L': 'lotusL', 'g': 'leaf'}, 19, 15)
     if kind == 'tile': text35(im, '8', 5, 7, 'ink')
@@ -277,42 +332,62 @@ LISTENERS = [
  dict(key='goat', name='염소', v=1, tag='소인 척하는 염소. 수염으로 듣는다.', art=C('milk', 'milkS', 'milk', mods=('goat',))),
  # venue 2 오페라홀
  dict(key='bgoat', name='흑염소', v=2, tag='턱시도를 입은 줄 알았는데 원래 검다.', art=C('blk', 'blkS', 'blkL', mods=('goat',))),
- dict(key='poksoh', name='폭소', v=2, tag='희극 오페라를 보다 웃음이 터졌다.', art=('blob', ('laugh',), {})),
  # venue 3 오케스트라홀
  dict(key='danso', name='단소', v=3, tag='대나무 단소. 구멍마다 경이 빠져나간다.', art=('bamboo', ('grnS', 'grn', 'savGL'), {})),
  dict(key='tungso', name='퉁소', v=3, tag='단소의 큰형. 낮은 소리로 경을 받는다.', art=('bamboo', ('woodS', 'wood', 'woodL'), {})),
  dict(key='eumso', name='음소', v=3, tag='소리의 가장 작은 단위. 소 귀에서 소리로 돌아간다.', art=('blob', ('note',), {})),
- # venue 4 야구장
- dict(key='maepyo', name='매표소', v=4, tag='외야석 두 장이요. 경은 무료.', art=('bld', ('yel', 'yelS', 'redS', 'ink2', 'ticket'), {})),
- dict(key='annae', name='안내소', v=4, tag='경은 왼쪽 귀로 들어가 오른쪽 귀로 나갑니다.', art=('bld', ('cyan', 'cyanS', 'blueS', 'navy', 'info'), {})),
- dict(key='hyuge', name='휴게소', v=4, tag='경(經)부고속도로 휴게소에서 잠시 쉬어 간다.', art=('bld', ('cream', 'milkS', 'red', 'redS', 'cup'), {})),
+ # venue 4 법원
+ dict(key='goso', name='고소', v=4, tag='누가 소 귀에 경을 읽었는지 따지겠다.', art=('doc', ('cream', 'seal'), {})),
+ dict(key='hangso', name='항소', v=4, tag='1심에 불복. 귀를 다시 열었다.', art=('doc', ('cream', 'up'), {})),
+ dict(key='sangso', name='상소', v=4, tag='더 높은 곳에서 다시 듣는다.', art=('doc', ('cyan', 'up2'), {})),
+ dict(key='seungso', name='승소', v=4, tag='이겼다! 경이 잘 들어갔다고 인정받았다.', art=('doc', ('yel', 'check'), {})),
+ dict(key='paeso', name='패소', v=4, tag='졌다. 그래도 경은 계속 듣는다.', art=('doc', ('ash', 'x'), {})),
+ dict(key='giso', name='기소', v=4, tag='검사가 경 읽기를 정식으로 기소했다.', art=('case', ('woodS', 'wood'), {})),
+ dict(key='gongso', name='공소', v=4, tag='공소장 낭독도 결국 경 읽기다.', art=('doc', ('cyan', 'seal'), {})),
+ dict(key='jeso', name='제소', v=4, tag='소장을 냅니다. 소가 소장을 냈다.', art=('doc', ('cream', 'pen'), {})),
+ dict(key='banso', name='반소', v=4, tag='맞고소. 소가 소에게.', art=('doc', ('pink', 'swap'), {})),
+ dict(key='hoso', name='호소', v=4, tag='판사님, 저는 그냥 들었을 뿐입니다.', art=('blob', ('plead',), {})),
+ # venue 5 웃음 극장
+ dict(key='poksoh', name='폭소', v=5, tag='경을 듣다 웃음이 터졌다.', art=('blob', ('laugh',), {})),
+ dict(key='silso', name='실소', v=5, tag='어이가 없어서 피식.', art=('face', ('yel', 'yelS', 'half', 'smirk', None), {})),
+ dict(key='naengso', name='냉소', v=5, tag='차갑게 한쪽 입꼬리만 올린다.', art=('face', ('cyan', 'cyanS', 'half', 'smirk', 'ice'), {})),
+ dict(key='joso', name='조소', v=5, tag='메롱. 놀리는 웃음.', art=('face', ('pur', 'purS', 'wink', 'tongue', None), {})),
+ dict(key='damso', name='담소', v=5, tag='경 얘기로 수다가 끊이지 않는다.', art=('face', ('grn', 'grnS', 'happy', 'open', 'bubble'), {})),
+ dict(key='hongso', name='홍소', v=5, tag='얼굴이 빨개지도록 껄껄.', art=('face', ('red', 'redS', 'happy', 'open', 'blush'), {})),
+ dict(key='ilso', name='일소', v=5, tag='한 번 웃고 다 잊는다.', art=('face', ('shirt', 'milkS', 'normal', 'smile', None), {})),
+ dict(key='bakjang', name='박장대소', v=5, tag='손뼉을 치며 크게 웃는다.', art=('face', ('org', 'orgS', 'happy', 'open', 'hands'), {})),
+ dict(key='paan', name='파안대소', v=5, tag='얼굴이 깨질 듯 크게 웃는다.', art=('face', ('yel', 'yelS', 'happy', 'open', 'tears'), {})),
+ # venue 6 야구장
+ dict(key='maepyo', name='매표소', v=6, tag='외야석 두 장이요. 경은 무료.', art=('bld', ('yel', 'yelS', 'redS', 'ink2', 'ticket'), {})),
+ dict(key='annae', name='안내소', v=6, tag='경은 왼쪽 귀로 들어가 오른쪽 귀로 나갑니다.', art=('bld', ('cyan', 'cyanS', 'blueS', 'navy', 'info'), {})),
+ dict(key='hyuge', name='휴게소', v=6, tag='경(經)부고속도로 휴게소에서 잠시 쉬어 간다.', art=('bld', ('cream', 'milkS', 'red', 'redS', 'cup'), {})),
  # venue 4 아프리카 초원
- dict(key='rhino', name='코뿔소', v=5, tag='귀보다 뿔이 먼저 듣는다.', art=C('buf', 'bufS', 'bufL', mods=('rhino',))),
- dict(key='wrhino', name='흰코뿔소', v=5, tag='이름만 희다. 입이 넓어 경을 많이 머금는다.', art=C('stone', 'stoneS', 'steel', mods=('rhino',))),
- dict(key='brhino', name='검은코뿔소', v=5, tag='사바나의 수행자. 혼자 걷는다.', art=C('blkL', 'blk', 'ash', mods=('rhino',))),
- dict(key='buffalo', name='물소', v=5, tag='귀에 물 들어간 것처럼 경이 잘 빠진다.', art=C('buf', 'bufS', 'bufL', horn='stone', hornS='stoneS', mods=('bighorn',))),
+ dict(key='rhino', name='코뿔소', v=7, tag='귀보다 뿔이 먼저 듣는다.', art=C('buf', 'bufS', 'bufL', mods=('rhino',))),
+ dict(key='wrhino', name='흰코뿔소', v=7, tag='이름만 희다. 입이 넓어 경을 많이 머금는다.', art=C('stone', 'stoneS', 'steel', mods=('rhino',))),
+ dict(key='brhino', name='검은코뿔소', v=7, tag='사바나의 수행자. 혼자 걷는다.', art=C('blkL', 'blk', 'ash', mods=('rhino',))),
+ dict(key='buffalo', name='물소', v=7, tag='귀에 물 들어간 것처럼 경이 잘 빠진다.', art=C('buf', 'bufS', 'bufL', horn='stone', hornS='stoneS', mods=('bighorn',))),
  # venue 5 서울
- dict(key='pachul', name='파출소', v=6, tag='경(警)과 경(經)을 헷갈린 순경이 왔다.', art=('bld', ('shirt', 'milkS', 'navy', 'tux', 'siren'), {})),
- dict(key='bogeon', name='보건소', v=6, tag='귀 건강 검진은 무료입니다.', art=('bld', ('shirt', 'milkS', 'grn', 'grnS', 'cross'), {})),
- dict(key='juyu', name='주유소', v=6, tag='경으로 가득 채워 주세요.', art=('bld', ('org', 'orgS', 'red', 'redS', 'drop'), {})),
- dict(key='sobang', name='소방소', v=6, tag='원래는 소방서. 오늘만 소방소로 출동했다.', art=('bld', ('red', 'redS', 'tux', 'ink2', 'fire'), {})),
- dict(key='samu', name='사무소', v=6, tag='경 접수는 3번 창구에서.', art=('bld', ('bldL', 'bld', 'bldS', 'tux', 'antenna'), {})),
- dict(key='suk', name='숙소', v=6, tag='자면서도 귀는 열어 둔다.', art=('bld', ('pink', 'pinkS', 'woodS', 'woodD', 'zzz'), {})),
- dict(key='setak', name='세탁소', v=6, tag='귀를 깨끗이 빨아 드립니다.', art=('bld', ('cyan', 'cyanS', 'teal', 'seaS', 'bubble'), {})),
- dict(key='ibal', name='이발소', v=6, tag='귀 옆머리를 단정히. 경이 더 잘 들린다.', art=('bld', ('shirt', 'milkS', 'blue', 'blueS', 'pole'), {})),
- dict(key='yeongu', name='연구소', v=6, tag='소 귀에 경 읽기의 효과를 연구하고 있다.', art=('bld', ('shirt', 'steelS', 'teal', 'seaS', 'flask'), {})),
- dict(key='baljeon', name='발전소', v=6, tag='흘러나온 경으로 전기를 만든다.', art=('tower', (), {})),
+ dict(key='pachul', name='파출소', v=8, tag='경(警)과 경(經)을 헷갈린 순경이 왔다.', art=('bld', ('shirt', 'milkS', 'navy', 'tux', 'siren'), {})),
+ dict(key='bogeon', name='보건소', v=8, tag='귀 건강 검진은 무료입니다.', art=('bld', ('shirt', 'milkS', 'grn', 'grnS', 'cross'), {})),
+ dict(key='juyu', name='주유소', v=8, tag='경으로 가득 채워 주세요.', art=('bld', ('org', 'orgS', 'red', 'redS', 'drop'), {})),
+ dict(key='sobang', name='소방소', v=8, tag='원래는 소방서. 오늘만 소방소로 출동했다.', art=('bld', ('red', 'redS', 'tux', 'ink2', 'fire'), {})),
+ dict(key='samu', name='사무소', v=8, tag='경 접수는 3번 창구에서.', art=('bld', ('bldL', 'bld', 'bldS', 'tux', 'antenna'), {})),
+ dict(key='suk', name='숙소', v=8, tag='자면서도 귀는 열어 둔다.', art=('bld', ('pink', 'pinkS', 'woodS', 'woodD', 'zzz'), {})),
+ dict(key='setak', name='세탁소', v=8, tag='귀를 깨끗이 빨아 드립니다.', art=('bld', ('cyan', 'cyanS', 'teal', 'seaS', 'bubble'), {})),
+ dict(key='ibal', name='이발소', v=8, tag='귀 옆머리를 단정히. 경이 더 잘 들린다.', art=('bld', ('shirt', 'milkS', 'blue', 'blueS', 'pole'), {})),
+ dict(key='yeongu', name='연구소', v=8, tag='소 귀에 경 읽기의 효과를 연구하고 있다.', art=('bld', ('shirt', 'steelS', 'teal', 'seaS', 'flask'), {})),
+ dict(key='baljeon', name='발전소', v=8, tag='흘러나온 경으로 전기를 만든다.', art=('tower', (), {})),
  # venue 6 지구
- dict(key='suso', name='수소', v=7, tag='우주에서 가장 가벼운 소.', art=('sph', ('shirt', 'milkS', 'H'), {})),
- dict(key='sanso', name='산소', v=7, tag='숨 쉴 때마다 경을 듣는다.', art=('sph', ('red', 'redS', 'O', 'shirt'), {})),
- dict(key='tanso', name='탄소', v=7, tag='모든 생명의 뼈대.', art=('sph', ('blkL', 'blk', 'C', 'shirt'), {})),
- dict(key='jilso', name='질소', v=7, tag='공기의 7할. 과자 봉지에도 산다.', art=('sph', ('blue', 'blueS', 'N', 'shirt'), {})),
- dict(key='yeomso', name='염소(Cl)', v=7, tag='아까 그 염소 아님. 수영장 냄새가 난다.', art=('sph', ('grn', 'grnS', 'Cl', 'shirt'), {})),
- dict(key='hyoso', name='효소', v=7, tag='들은 경을 잘게 소화시켜 준다.', art=('blob', ('enzyme',), {})),
- dict(key='yeoprok', name='엽록소', v=7, tag='햇빛으로 경을 광합성한다.', art=('blob', ('leaf',), {})),
- dict(key='wonso', name='원소', v=7, tag='주기율표에 없는 원소. 기호 So.', art=('blob', ('tile',), {})),
- dict(key='miso', name='미소', v=7, tag='염화미소. 꽃을 들어 보이자 빙그레 웃었다.', art=('blob', ('smile',), {})),
- dict(key='white', name='흰 소', v=7, tag='모든 소가 하나로 돌아간 자리. 열반을 기다린다.', art=('holy', (), {})),
+ dict(key='suso', name='수소', v=9, tag='우주에서 가장 가벼운 소.', art=('sph', ('shirt', 'milkS', 'H'), {})),
+ dict(key='sanso', name='산소', v=9, tag='숨 쉴 때마다 경을 듣는다.', art=('sph', ('red', 'redS', 'O', 'shirt'), {})),
+ dict(key='tanso', name='탄소', v=9, tag='모든 생명의 뼈대.', art=('sph', ('blkL', 'blk', 'C', 'shirt'), {})),
+ dict(key='jilso', name='질소', v=9, tag='공기의 7할. 과자 봉지에도 산다.', art=('sph', ('blue', 'blueS', 'N', 'shirt'), {})),
+ dict(key='yeomso', name='염소(Cl)', v=9, tag='아까 그 염소 아님. 수영장 냄새가 난다.', art=('sph', ('grn', 'grnS', 'Cl', 'shirt'), {})),
+ dict(key='hyoso', name='효소', v=9, tag='들은 경을 잘게 소화시켜 준다.', art=('blob', ('enzyme',), {})),
+ dict(key='yeoprok', name='엽록소', v=9, tag='햇빛으로 경을 광합성한다.', art=('blob', ('leaf',), {})),
+ dict(key='wonso', name='원소', v=9, tag='주기율표에 없는 원소. 기호 So.', art=('blob', ('tile',), {})),
+ dict(key='miso', name='미소', v=9, tag='염화미소. 꽃을 들어 보이자 빙그레 웃었다.', art=('blob', ('smile',), {})),
+ dict(key='white', name='흰 소', v=9, tag='모든 소가 하나로 돌아간 자리. 열반을 기다린다.', art=('holy', (), {})),
 ]
 
 def listener_frames(L):
@@ -327,9 +402,12 @@ def listener_frames(L):
     if kind == 'bld': base = building(*args); return frames_from(base, args[0])
     if kind == 'tower': base = tower(); return frames_from(base, 'stone')
     if kind == 'bamboo': base = bamboo(*args); return frames_from(base, args[1])
+    if kind == 'doc': base = doc(*args); return frames_from(base, args[0])
+    if kind == 'face': base = face(*args); return frames_from(base, args[0])
+    if kind == 'case': base = briefcase(*args); return frames_from(base, args[0])
     if kind == 'sph': base = sphere(*args); return frames_from(base, args[0])
     if kind == 'blob':
-        base = blob(args[0]); body = {'enzyme': 'pur', 'leaf': 'grn', 'laugh': 'org', 'smile': 'yel', 'tile': 'cream', 'note': 'shirt'}[args[0]]
+        base = blob(args[0]); body = {'enzyme': 'pur', 'leaf': 'grn', 'laugh': 'org', 'smile': 'yel', 'tile': 'cream', 'note': 'shirt', 'plead': 'pink'}[args[0]]
         return frames_from(base, body)
 
 # ================= performers =================
@@ -481,6 +559,64 @@ def performers():
         for (x, y) in ([(3, 9), (4, 10), (20, 9), (19, 10)] if up else [(5, 12), (6, 12), (18, 12), (17, 12)]): px(im, x, y, 'woodL')
         return im
     out['r_timp'] = [timpani(False), timpani(True)]
+    # ---- courtroom ----
+    def court(role, up):
+        if role == 'judge':
+            im = person('steel', 'skin', 'skinS', 'tux', 'tuxL', 'tux', style='short', gown=True)
+            rect(im, 6, 10, 10, 12, 'shirt')
+            g = ['.ooo', 'owwo', '.ooo', '..o.', '..o.'] if not up else ['...o', 'ooow', 'owwo', 'ooo.']
+            over(im, g, {'o': 'ink', 'w': 'wood'}, 12, 7 if up else 11)
+            return im
+        if role == 'pros':
+            im = person('hairB', 'skin', 'skinS', 'tux', 'tuxL', 'tux', style='short', mouth_open=up)
+            rect(im, 7, 10, 9, 15, 'red')
+            if up:
+                for (x, y) in ((13, 9), (14, 8), (15, 7)): px(im, x, y, 'skin')
+                px(im, 14, 9, 'ink'); px(im, 15, 8, 'ink')
+            return im
+        if role == 'lawyer':
+            im = person('hairBr', 'skin2', 'skin2S', 'navy', 'blueS', 'navy', style='short')
+            rect(im, 7, 10, 9, 15, 'shirt')
+            over(im, ['.oooo.', 'owwwwo', 'owwwwo', '.oooo.'] if up else ['oooo', 'wwwo', 'wwwo', 'oooo'], {'o': 'ink', 'w': 'cream'}, 10, 9 if up else 12)
+            return im
+        if role == 'steno':
+            im = person('hairR', 'skin', 'skinS', 'blue', 'blueS', 'navy', style='bun', gown=True)
+            over(im, ['oooooooooo', 'osksksksko', 'oooooooooo'], {'o': 'ink', 's': 'steel', 'k': 'tuxL'}, 3, 15 + (1 if up else 0))
+            return im
+    for k, role in (('j_judge', 'judge'), ('j_pros', 'pros'), ('j_lawyer', 'lawyer'), ('j_steno', 'steno')):
+        out[k] = [court(role, False), court(role, True)]
+    # ---- comedy club ----
+    def comic(up):
+        im = person('hairB', 'skin', 'skinS', 'pur', 'purS', 'tux', style='short', mouth_open=up)
+        rect(im, 7, 10, 9, 15, 'yel')
+        over(im, ['.oo', 'oso', '.o.'], {'o': 'ink', 's': 'steel'}, 12 if up else 11, 6 if up else 9)
+        if up: px(im, 1, 9, 'skin'); px(im, 0, 8, 'skin')
+        return im
+    def rimshot(up):
+        im = new(24, 24)
+        p = person('hairBr', 'skin2', 'skin2S', 'blue', 'blueS', 'navy', style='short', mouth_open=up)
+        im.alpha_composite(p.crop((0, 0, 16, 16)), (4, 0))
+        kit = ['.oo..........oo.', 'osso........osso', '.oo..ooooo...oo.', '..o.obbbbbo..o..', '..oobbwwwbboo...', '...obbwwwbbo....', '....obbbbbo.....', '.....ooooo......']
+        over(im, kit, {'o': 'ink', 's': 'brass', 'b': 'blueS', 'w': 'shirt'}, 4, 15)
+        for (x, y) in ([(5, 10), (6, 11), (18, 9), (17, 10)] if up else [(6, 14), (7, 14), (17, 14), (16, 14)]): px(im, x, y, 'woodL')
+        return im
+    def crowd(up):
+        im = new(24, 24)
+        for i, (x, sk, hair, top) in enumerate(((0, 'skin', 'hairY', 'red'), (8, 'skin3', 'hairB', 'grn'), (16, 'skin2', 'hairBr', 'blue'))):
+            p = person(hair, sk, sk + 'S', top, top + 'S', 'navy', style='short', mouth_open=up or i == 1)
+            im.alpha_composite(p.crop((0, 0, 16, 18)), (x - 4, 6 - (1 if up and i != 1 else 0)))
+        return im
+    def clapper(up):
+        im = person('hairR', 'skin', 'skinS', 'org', 'orgS', 'navy', style='pony', mouth_open=True)
+        for y in (11, 12):
+            for x in (2, 3, 12, 13): px(im, x, y, T if True else 'skin')
+        if up: rect(im, 6, 10, 10, 12, 'skin')
+        else: px(im, 3, 11, 'skin'); px(im, 12, 11, 'skin'); px(im, 2, 11, 'ink'); px(im, 13, 11, 'ink')
+        return im
+    out['h_comic'] = [comic(False), comic(True)]
+    out['h_drum'] = [rimshot(False), rimshot(True)]
+    out['h_crowd'] = [crowd(False), crowd(True)]
+    out['h_clap'] = [clapper(False), clapper(True)]
     # ---- stadium cheer squad ----
     def jersey(skin, skinS, hair, style, prop=None, up=False, skirt=False, col='blue', colS='blueS'):
         im = person(hair, skin, skinS, col, colS, 'shirt' if skirt else 'navy', style=style, gown=False, mouth_open=up)
@@ -673,6 +809,59 @@ def venue_orchestra():
     for y in range(120, H, 6): fill(im, 0, y, 120, y + 1, 'woodD')
     return im
 
+def venue_court():
+    im = canvas('woodD'); dgrad(im, 0, 120, ['woodD', 'woodS'])
+    for x in range(0, W, 16): fill(im, x, 0, x + 1, 130, 'woodD')
+    for y in (24, 60, 96): fill(im, 0, y, W, y + 1, 'woodD')
+    # scales emblem on the back wall
+    cx = 220
+    fill(im, cx - 1, 10, cx + 1, 40, 'gold'); fill(im, cx - 18, 14, cx + 19, 16, 'gold'); fill(im, cx - 8, 40, cx + 9, 42, 'gold')
+    for dx in (-16, 16):
+        for k in range(8): px(im, cx + dx - 4 + k, 24 + (k in (0, 7)) * 0, 'goldS')
+        fill(im, cx + dx - 5, 24, cx + dx + 6, 26, 'gold')
+        px(im, cx + dx, 16, 'gold'); fill(im, cx + dx, 17, cx + dx + 1, 24, 'goldS')
+    # judge's bench (left, high) and witness rail
+    fill(im, 0, 86, 118, 112, 'wood'); fill(im, 0, 86, 118, 89, 'woodL'); fill(im, 0, 110, 118, 112, 'woodS')
+    for x in range(8, 118, 18): fill(im, x, 92, x + 12, 106, 'woodS')
+    # floor and pews for the herd
+    fill(im, 0, 112, W, H, 'woodS')
+    for y in range(112, H, 7): fill(im, 0, y, W, y + 1, 'woodD')
+    for ry in (46, 62, 78, 94, 110, 126, 142, 158):
+        fill(im, 118, ry + 18, W, ry + 21, 'wood'); fill(im, 118, ry + 21, W, ry + 23, 'woodD')
+    fill(im, 116, 168, W, 172, 'woodL')
+    return im
+
+def venue_comedy():
+    im = canvas('velvetS')
+    # brick wall
+    for y in range(0, 130):
+        for x in range(W):
+            mortar = y % 6 == 5 or (x + (y // 6 % 2) * 6) % 12 == 11
+            px(im, x, y, 'ink2' if mortar else ('redS' if (x // 12 + y // 6) % 3 else 'velvetS'))
+    # neon sign "웃음" (Galmuri7 glyphs, 4x)
+    g = bdf_glyphs('package/dist/Galmuri7.bdf', '웃음')
+    x0 = 170
+    for ch in '웃음':
+        gg = g[ch]
+        for yy, r in enumerate(gg['rows']):
+            for xx, v in enumerate(r):
+                if v == '1': fill(im, x0 + xx * 4, 10 + yy * 4, x0 + xx * 4 + 3, 10 + yy * 4 + 3, 'pink')
+        x0 += gg['dw'] * 4 + 4
+    # stage (left), spotlight circle, mic stand
+    fill(im, 0, 112, 118, 122, 'wood'); fill(im, 0, 112, 118, 114, 'woodL'); fill(im, 0, 122, 118, 126, 'woodD')
+    for y in range(0, 112):
+        half = 10 + y // 4
+        for x in range(56 - half, 56 + half):
+            if 0 <= x < 118 and BAYER[y % 4][x % 4] < 2: px(im, x, y, 'k1')
+    # audience floor with little round tables
+    fill(im, 0, 126, W, H, 'tux'); fill(im, 118, 60, W, H, 'tux')
+    for y in range(60, H):
+        for x in range(118, W):
+            if BAYER[y % 4][x % 4] == 0: px(im, x, y, 'tuxL')
+    for (tx, ty) in ((140, 86), (200, 100), (260, 84), (170, 132), (240, 140), (300, 120)):
+        disc(im, tx, ty, 5, 'wood'); px(im, tx, ty - 3, 'k1')
+    return im
+
 def venue_stadium():
     im = canvas('night0'); dgrad(im, 0, 60, ['night0', 'night1'])
     stars(im, 30, 40)
@@ -788,12 +977,14 @@ def venue_earth():
 VENUES = [
  dict(key='temple', name='절간', cap=6, bg=venue_temple),
  dict(key='concert', name='콘서트장', cap=9, bg=venue_concert),
- dict(key='opera', name='오페라홀', cap=11, bg=venue_opera),
- dict(key='orchestra', name='오케스트라홀', cap=14, bg=venue_orchestra),
- dict(key='stadium', name='야구장', cap=17, bg=venue_stadium),
- dict(key='savanna', name='아프리카 초원', cap=21, bg=venue_savanna),
- dict(key='seoul', name='서울', cap=31, bg=venue_seoul),
- dict(key='earth', name='지구', cap=41, bg=venue_earth),
+ dict(key='opera', name='오페라홀', cap=10, bg=venue_opera),
+ dict(key='orchestra', name='오케스트라홀', cap=13, bg=venue_orchestra),
+ dict(key='court', name='법원', cap=23, bg=venue_court),
+ dict(key='comedy', name='웃음 극장', cap=32, bg=venue_comedy),
+ dict(key='stadium', name='야구장', cap=35, bg=venue_stadium),
+ dict(key='savanna', name='아프리카 초원', cap=39, bg=venue_savanna),
+ dict(key='seoul', name='서울', cap=49, bg=venue_seoul),
+ dict(key='earth', name='지구', cap=59, bg=venue_earth),
 ]
 
 # ================= new icons (12x12) =================

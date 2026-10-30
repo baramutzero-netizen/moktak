@@ -67,6 +67,7 @@ main { flex: 1; padding-bottom: calc(var(--tabh) + env(safe-area-inset-bottom, 0
 .tapzone { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: stretch; }
 .kinds { display: grid; grid-template-rows: repeat(4, 1fr); gap: 6px; }
 .kinds button { min-width: 76px; background: var(--panel); border: 2px solid var(--line); color: var(--muted); font-family: var(--f-sm); font-size: 12px; padding: 0 8px; }
+.kinds button::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; border: 2px solid #000; background: var(--sw); }
 .kinds button[aria-checked="true"] { border-color: var(--gold); color: var(--gold); background: var(--panel2); }
 .tap { width: 100%; display: grid; place-items: center; background: var(--panel2); border: 2px solid #000; box-shadow: inset 0 0 0 2px var(--line), 3px 3px 0 #000; padding: 14px 16px; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .tap canvas { width: 156px; height: 156px; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
@@ -178,7 +179,7 @@ a.chip { text-decoration: none; display: inline-block; }
           </div>
           <div class="side">
             <div class="tapzone"><button class="tap" id="tapBtn" aria-label="목탁 치기"><canvas id="tapIcon" width="26" height="26"></canvas></button>
-              <div class="kinds" role="radiogroup" aria-label="목탁 소리"><button role="radio" data-kind="syn">기본</button><button role="radio" data-kind="1">목탁 1</button><button role="radio" data-kind="2">목탁 2</button><button role="radio" data-kind="3">목탁 3</button></div></div>
+              <div class="kinds" role="radiogroup" aria-label="목탁 소리"><button role="radio" data-kind="syn" style="--sw:#c97f3d">기본</button><button role="radio" data-kind="1" style="--sw:#b8473a">목탁 1</button><button role="radio" data-kind="2" style="--sw:#5c4b55">목탁 2</button><button role="radio" data-kind="3" style="--sw:#d9a63f">목탁 3</button></div></div>
             <div class="chant" id="chant"><span class="lbl">지금 읽는 경</span><span id="chantText"></span></div>
             <div>
               <div class="quick" id="quick"></div>
@@ -221,7 +222,7 @@ a.chip { text-decoration: none; display: inline-block; }
     <h2 id="setT">설정</h2>
     <div class="opt"><span>목탁 소리</span><button class="sw" role="switch" id="swTok" aria-checked="true" aria-label="목탁 소리"></button></div>
     <div class="opt"><span>독경 소리<small>스님의 염불</small></span><button class="sw" role="switch" id="swChant" aria-checked="true" aria-label="독경 소리"></button></div>
-    <div class="opt"><span>악단 소리<small>동자승 · 메탈 밴드 · 오페라 · 오케스트라 · 응원단 · 젬베 · 사물놀이</small></span><button class="sw" role="switch" id="swBand" aria-checked="true" aria-label="악단 소리"></button></div>
+    <div class="opt"><span>악단 소리<small>동자승 · 메탈 밴드 · 오페라 · 오케스트라 · 법조인 · 개그팀 · 응원단 · 젬베 · 사물놀이</small></span><button class="sw" role="switch" id="swBand" aria-checked="true" aria-label="악단 소리"></button></div>
     <div class="opt"><span>문의하기<small class="mail" id="mailText">baramutzero@gmail.com</small></span><span class="row2"><button class="chip" id="mailCopy">주소 복사</button><a class="chip" id="mailLink" href="mailto:baramutzero@gmail.com?subject=%5B%EC%86%8C%20%EA%B7%80%EC%97%90%20%EA%B2%BD%20%EC%9D%BD%EA%B8%B0%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">메일 쓰기</a></span></div>
     <div class="opt"><span>개인정보처리방침<small>무엇을 저장하고 무엇을 보내지 않는지</small></span><button class="chip" id="privBtn2">보기</button></div>
     <div class="row2" id="resetBox"></div>
@@ -232,7 +233,7 @@ a.chip { text-decoration: none; display: inline-block; }
 <div class="overlay ending" id="ending" hidden>
   <div class="card" role="dialog" aria-labelledby="endT">
     <h2 id="endT">열반에 들다</h2>
-    <p>절간에서 시작해 콘서트장, 오페라홀, 오케스트라홀, 야구장, 초원, 서울을 지나 지구 전체가 법회장이 되었습니다. 무량대수 번 흘려들은 경이 마침내 모든 소의 마음에 닿았고, 소들은 연꽃 위에서 고요히 열반에 들었습니다.</p>
+    <p>절간에서 시작해 콘서트장, 오페라홀, 오케스트라홀, 법원, 웃음 극장, 야구장, 초원, 서울을 지나 지구 전체가 법회장이 되었습니다. 무량대수 번 흘려들은 경이 마침내 모든 소의 마음에 닿았고, 소들은 연꽃 위에서 고요히 열반에 들었습니다.</p>
     <p class="s" id="endStats"></p>
     <div class="row2"><button id="endShare">결과 그림 공유</button><button id="againBtn">다시 윤회하기</button></div>
   </div>
@@ -346,6 +347,8 @@ const GROUPS = {
   metal: { short: '메탈 밴드', title: '메탈 밴드 섭외', pw: 30, credit: [0, 4, 8, 12], venue: 1, desc: '드럼과 베이스, 기타가 경에 박자를 싣습니다' },
   opera: { short: '오페라단', title: '오페라단 초청', pw: 2e3, credit: [0, 5, 10], venue: 2, desc: '마디마다 화음을 길게 노래합니다' },
   orch: { short: '오케스트라', title: '오케스트라 모시기', pw: 2e4, credit: [0, 4, 8, 12], venue: 3, desc: '현악과 관악, 팀파니가 화음을 받칩니다' },
+  court: { short: '법조인', title: '법정 사람들 모시기', pw: 1.5e5, credit: [0, 4, 8, 12], venue: 4, desc: '의사봉과 이의 제기, 타자 소리로 재판이 열립니다' },
+  comedy: { short: '개그팀', title: '개그팀 섭외', pw: 4e5, credit: [0, 4, 8, 12], venue: 5, desc: '개그와 림샷, 웃음과 박수가 터집니다' },
   cheer: { short: '응원단', title: '응원단 부르기', pw: 1.2e5, credit: [0, 4, 8, 12], venue: 4, desc: '메가폰과 박수, 북과 트럼펫으로 응원합니다' },
   djembe: { short: '젬베 연주자', title: '젬베 연주자 모시기', pw: 8e6, credit: [2, 6, 10, 14], venue: 5, desc: '초원의 리듬을 겹겹이 쌓습니다' },
   samul: { short: '사물놀이패', title: '사물놀이패 모시기', pw: 5e8, credit: [0, 4, 8, 12], venue: 6, desc: '꽹과리 · 장구 · 북 · 징이 휘몰아칩니다' },
@@ -356,6 +359,8 @@ for (let i = 0; i < 10; i++) PERF.push({ g: 'novice', key: 'novice', name: `동�
 [['m_drum', '드러머'], ['m_bass', '베이시스트'], ['m_rhythm', '리듬 기타'], ['m_lead', '리드 기타']].forEach(([k, n]) => PERF.push({ g: 'metal', key: k, name: n }));
 [['o_ten', '테너'], ['o_sop', '소프라노'], ['o_bar', '바리톤'], ['o_mez', '메조소프라노'], ['o_choir', '합창단']].forEach(([k, n]) => PERF.push({ g: 'opera', key: k, name: n }));
 [['r_cond', '지휘자'], ['r_vln', '바이올린'], ['r_vc', '첼로'], ['r_fl', '플루트'], ['r_hn', '호른'], ['r_timp', '팀파니']].forEach(([k, n]) => PERF.push({ g: 'orch', key: k, name: n }));
+[['j_judge', '판사'], ['j_pros', '검사'], ['j_lawyer', '변호사'], ['j_steno', '속기사']].forEach(([k, n]) => PERF.push({ g: 'court', key: k, name: n }));
+[['h_comic', '개그맨'], ['h_drum', '림샷 드러머'], ['h_crowd', '웃음 관객'], ['h_clap', '박수 부대']].forEach(([k, n]) => PERF.push({ g: 'comedy', key: k, name: n }));
 [['c_leader', '응원단장'], ['c_cheer0', '치어리더 1'], ['c_cheer1', '치어리더 2'], ['c_cheer2', '치어리더 3'], ['c_drum', '응원 북'], ['c_trumpet', '트럼펫']].forEach(([k, n]) => PERF.push({ g: 'cheer', key: k, name: n }));
 [['d_djembe0', '젬베 연주자 1'], ['d_djembe1', '젬베 연주자 2'], ['d_djembe2', '젬베 연주자 3']].forEach(([k, n]) => PERF.push({ g: 'djembe', key: k, name: n }));
 [['s_kkwaeng', '꽹과리'], ['s_janggu', '장구'], ['s_buk', '북'], ['s_jing', '징']].forEach(([k, n]) => PERF.push({ g: 'samul', key: k, name: n }));
@@ -365,16 +370,17 @@ const PERF_POS = {
   novice: [[0, 158], [22, 158], [44, 158], [66, 158], [88, 158], [0, 178], [22, 178], [44, 178], [66, 178], [88, 178]],
   m_bass: [2, 62], m_rhythm: [18, 62], m_drum: [35, 62], m_lead: [60, 62], m_vocal: [78, 62],
   o_sop: [2, 88], o_mez: [18, 88], o_ten: [34, 88], o_bar: [50, 88], o_choir: [70, 88],
+  h_comic: [4, 10], h_drum: [22, 10], h_crowd: [48, 10], h_clap: [74, 10],
   r_vln: [2, 36], r_vc: [18, 36], r_fl: [34, 36], r_hn: [50, 36], r_timp: [66, 36], r_cond: [94, 36],
   d_djembe0: [2, 130], d_djembe1: [20, 130], d_djembe2: [38, 130],
-  c_leader: [122, 176], c_cheer0: [142, 176], c_cheer1: [162, 176], c_cheer2: [182, 176], c_drum: [202, 176], c_trumpet: [222, 176],
-  s_kkwaeng: [242, 176], s_janggu: [262, 176], s_buk: [282, 176], s_jing: [302, 176],
+  // bottom strip (x116..320): courtroom, cheer squad, samulnori — 14 players, a little overlap
+  ...Object.fromEntries(['j_judge', 'j_pros', 'j_lawyer', 'j_steno', 'c_leader', 'c_cheer0', 'c_cheer1', 'c_cheer2', 'c_drum', 'c_trumpet', 's_kkwaeng', 's_janggu', 's_buk', 's_jing'].map((k, i) => [k, [116 + Math.round(i * 14.4), 176]])),
 };
 // listener slots: 6 rows x 7, filled bottom-up and centre-out
 const SLOTS = [];
-for (let r = 5; r >= 0; r--) {
+for (let r = 7; r >= 0; r--) {   // 8 rows x 8: room for 59 listeners
   const row = [];
-  for (let c = 0; c < 7; c++) row.push([120 + c * 27 + (r % 2) * 10, 52 + r * 19]);
+  for (let c = 0; c < 8; c++) row.push([120 + c * 24 + (r % 2) * 8, 46 + r * 15]);
   row.sort((a, b) => Math.abs(a[0] + 12 - 222) - Math.abs(b[0] + 12 - 222));
   SLOTS.push(...row);
 }
@@ -392,8 +398,8 @@ const STAGES = [['심우', '尋牛', '소를 찾아 나서다'], ['견적', '見
 // ---------- node tree ----------
 const NODES = []; const NODE = {};
 function addNode(n) { NODES.push(n); NODE[n.id] = n; return n; }
-const INC_T = ['선향', '백단향', '침향', '정향', '유향', '용연향', '전단향', '우담화향'];
-const EAR_T = ['귀이개', '면봉', '귀지 흡입기', '물 세척', '초음파 세척', '귀 마사지', '반야 귀청소', '천이통'];
+const INC_T = ['선향', '백단향', '침향', '정향', '유향', '안식향', '용연향', '전단향', '우담화향'];
+const EAR_T = ['귀이개', '면봉', '귀지 흡입기', '물 세척', '초음파 세척', '이명 치료', '귀 마사지', '반야 귀청소', '천이통'];
 const ICON = { moktak: 'icon_moktak', sutra: 'icon_sutra', incense: 'icon_incense', ear: 'icon_earpick' };
 for (const n of B.nodes) {
   const m = Object.assign({}, n);
@@ -419,7 +425,7 @@ const BUYABLE = NODES.filter(n => n.type !== 'root' && n.type !== 'nirvana');
 // ---------- state ----------
 const fresh = () => ({ v: 2, karma: 0, total: 0, taps: 0, owned: { root: 1 }, played: 0, nirvana: false, saved: Date.now(), snd: { tok: true, chant: true, band: true, kind: 'syn' } });
 let S = fresh();
-const SAVE_KEY = 'sogwi-save-v3';
+const SAVE_KEY = 'sogwi-save-v5';
 function save() { S.saved = Date.now(); try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) {} }
 function load() { try { const r = localStorage.getItem(SAVE_KEY); if (r) { const o = Object.assign(fresh(), JSON.parse(r)); o.snd = Object.assign(fresh().snd, o.snd); delete o.cheat; if (!['syn', '1', '2', '3'].includes(o.snd.kind)) o.snd.kind = 'syn'; return o; } } catch (e) {} return null; }
 
@@ -486,9 +492,27 @@ function play(name, { gain = 1, rate = 1, out = 'band', at = 0 } = {}) {
 }
 const chantBuf = key => G.chant.syl[key];
 const tokName = k => S.snd.kind === 'syn' || !S.snd.kind ? 'moktak' + (k % 3) : `mk${S.snd.kind}_${k % 3}`;
+// each moktak sound gets its own wood: 기본 = natural, 1 = red lacquer, 2 = ebony, 3 = golden wood
+const WOOD_SRC = { '#c97f3d': 0, '#8c4f22': 1, '#eab46a': 2, '#5e3218': 3 };
+const WOODS = { syn: null, '1': ['#b8473a', '#7a2f2c', '#e27b5c', '#4a1a1c'], '2': ['#5c4b55', '#3a2f36', '#8d7c86', '#1f181c'], '3': ['#d9a63f', '#a5732a', '#f5d47c', '#6e4a18'] };
+const woodSheets = {};
+function moktakSheet(kind) {
+  if (!WOODS[kind]) return IMG.moktak;
+  if (woodSheets[kind]) return woodSheets[kind];
+  const im = IMG.moktak; if (!im.complete) return im;
+  const c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+  const x = c.getContext('2d'); x.drawImage(im, 0, 0);
+  const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
+  const hex = (r, g, b) => '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+  const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  for (let i = 0; i < p.length; i += 4) { const k = WOOD_SRC[hex(p[i], p[i + 1], p[i + 2])]; if (k !== undefined) { const [r, g, b] = rgb(WOODS[kind][k]); p[i] = r; p[i + 1] = g; p[i + 2] = b; } }
+  x.putImageData(d, 0, 0);
+  return (woodSheets[kind] = c);
+}
+function drawMoktak(c, frame, x, y) { const s = A.sprites.moktak, im = moktakSheet(S.snd.kind || 'syn'); if (im.complete === false) return; c.drawImage(im, frame * s.w, 0, s.w, s.h, Math.round(x), Math.round(y), s.w, s.h); }
 function syncKinds() { document.querySelectorAll('.kinds button').forEach(b => b.setAttribute('aria-checked', b.dataset.kind === (S.snd.kind || 'syn'))); }
 document.querySelectorAll('.kinds button').forEach(b => b.addEventListener('click', () => {
-  initAudio(); S.snd.kind = b.dataset.kind; syncKinds(); save();
+  initAudio(); S.snd.kind = b.dataset.kind; syncKinds(); save(); tapFrame = -1;
   const go = (n = 0) => BUF[tokName(0)] ? play(tokName(0), { gain: 0.9, out: 'tok' }) : n < 20 && setTimeout(() => go(n + 1), 100); go();
 }));
 
@@ -523,7 +547,7 @@ function flushGlyphs() {
     const sx = MOUTH[0] + Math.random() * 3, sy = MOUTH[1] + Math.random() * 3;
     const ex = cx + 1, ey = cy + 8;
     const d = Math.hypot(ex - sx, ey - sy);
-    glyphs.push({ li, v, crit, phase: 0, t: 0, dur: 0.3 + d / 280, sx, sy, ex, ey, arc: 14 + Math.random() * 26, f: D.sutra * 4 + (Math.random() * 4 | 0), x: sx, y: sy });
+    glyphs.push({ li, v, crit, phase: 0, t: 0, dur: 0.3 + d / 280, sx, sy, ex, ey, arc: 14 + Math.random() * 26, f: Math.min(D.sutra, A.sprites.sutra.n / 4 - 1) * 4 + (Math.random() * 4 | 0), x: sx, y: sy });
   }
 }
 function creditNow(li, v, crit) { S.karma += v; S.total += v; }
@@ -580,6 +604,14 @@ function performStep(j, s16, bar, at) {
   else if (k === 'r_fl') { if (s16 % 2 === 0) n('r_fl', { gain: 0.16, rate: semi([[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]][chord][(s16 / 2) % 4]) }); }
   else if (k === 'r_hn') { if (s16 === 0 || s16 === 8) n('r_hn', { gain: 0.3, rate: semi([3, 0, 7, 2][chord]) }); }
   else if (k === 'r_timp') { if (s16 === 0) n('r_timp', { gain: 0.5, rate: R }); if (s16 === 12) n('r_timp', { gain: 0.35, rate: R * 1.498 }); }
+  else if (k === 'j_judge') { if (s16 === 0) n('j_gavel', { gain: 0.6 }); if (bar % 4 === 3 && [8, 10, 12].includes(s16)) n('j_gavel', { gain: 0.55, rate: 1 + (s16 - 8) * 0.01 }); }
+  else if (k === 'j_pros') { if (bar % 4 === 1 && s16 === 0) n('j_objection', { gain: 0.7 }); else if (s16 % 8 === 4) n(null); }
+  else if (k === 'j_lawyer') { if (s16 === 6 || s16 === 14) n('j_paper', { gain: 0.4 }); }
+  else if (k === 'j_steno') { if (s16 % 2 === 1 || s16 === 4) n('j_type', { gain: 0.22, rate: 0.9 + ((s16 * 7) % 5) * 0.06 }); }
+  else if (k === 'h_comic') { if (bar % 4 === 2 && s16 === 0) n('h_haha', { gain: 0.6 }); else if (s16 % 4 === 0) n(null); }
+  else if (k === 'h_drum') { if (bar % 4 === 3) { if (s16 === 12) n('h_tom1', { gain: 0.6 }); if (s16 === 13) n('h_tom2', { gain: 0.6 }); if (s16 === 14) n('h_tss', { gain: 0.45 }); } else if (s16 % 8 === 0) n(null); }
+  else if (k === 'h_crowd') { if (bar % 4 === 0 && s16 === 0) n('h_crowd', { gain: 0.45 }); else if (s16 % 8 === 4) n(null); }
+  else if (k === 'h_clap') { if (bar % 8 === 4 && s16 === 0) n('h_applause', { gain: 0.4 }); else if (s16 % 8 === 0) n(null); }
   else if (k === 'c_leader') { if ((s16 === 0 || s16 === 8) && curSyl) n(chantBuf(curSyl.key), { gain: 0.8, rate: 1.06, out: 'mega' }); if (s16 === 0 && bar % 2 === 0) n('c_whistle', { gain: 0.25 }); }
   else if (k === 'c_cheer0') { if (s16 === 4 || s16 === 12) n('c_clap', { gain: 0.5 }); }
   else if (k === 'c_cheer1') { if (s16 % 4 === 2) n('c_pompom', { gain: 0.35 }); }
@@ -686,7 +718,7 @@ function draw() {
   // performers behind the monk (metal row, opera row, djembe)
   const isHit = j => now >= pAnim[j].hitAt && now < pAnim[j].hitAt + 0.12;
   for (const j of D.perfs) {
-    const p = PERF[j]; if (p.g === 'novice' || p.g === 'cheer' || p.g === 'samul') continue;
+    const p = PERF[j]; if (p.g === 'novice' || p.g === 'cheer' || p.g === 'samul' || p.g === 'court') continue;
     const [x, y] = PERF_POS[p.key]; spr(p.key, isHit(j) ? 1 : 0, x, y);
   }
   // incense burner
@@ -711,12 +743,12 @@ function draw() {
   }
   // monk + moktak
   spr('monk', now >= monkHit && now < monkHit + 0.1 ? 1 : 0, MONK[0], MONK[1]);
-  spr('moktak', now >= moktakHit && now < moktakHit + 0.08 ? 1 : 0, MOKTAK[0], MOKTAK[1]);
+  drawMoktak(ctx, now >= moktakHit && now < moktakHit + 0.08 ? 1 : 0, MOKTAK[0], MOKTAK[1]);
   // front rows: novices, cheer squad, samulnori
   for (const j of D.perfs) {
     const p = PERF[j], hit = isHit(j);
     if (p.g === 'novice') { const [x, y] = PERF_POS.novice[p.n]; spr('novice', hit ? 1 : 0, x, y); spr('mini_moktak', 0, x + 13, y + 9 + (hit ? 1 : 0)); }
-    else if (p.g === 'cheer' || p.g === 'samul') { const [x, y] = PERF_POS[p.key]; spr(p.key, hit ? 1 : 0, x, y - (hit && p.g === 'cheer' ? 1 : 0)); }
+    else if (p.g === 'cheer' || p.g === 'samul' || p.g === 'court') { const [x, y] = PERF_POS[p.key]; spr(p.key, hit ? 1 : 0, x, y - (hit && p.g === 'cheer' ? 1 : 0)); }
   }
   for (const g of glyphs) { if (g.phase === 1) continue; spr('sutra', g.f, g.x - 4, g.y - 4, g.phase === 2 ? 1 - g.t / 0.22 : 1); }
   for (const o of orbs) spr('karma', (o.t * 8 | 0) % 2, o.x - 3, o.y - 3, Math.max(0, 1 - o.t / o.life));
@@ -1099,7 +1131,7 @@ function drawTapIcon() {
   const key = pose.join(',') + f + trail;
   if (key === tapFrame || !IMG.moktak.complete) return;
   tapFrame = key; tapCtx.clearRect(0, 0, 26, 26);
-  sprTo(tapCtx, 'moktak', f, 3, 14);
+  drawMoktak(tapCtx, f, 3, 14);
   if (trail) { headGhost(tapCtx, POSE.rest, 0.3); headGhost(tapCtx, POSE.mid, 0.5); }
   drawMallet(tapCtx, pose);
 }

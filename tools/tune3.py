@@ -2,15 +2,15 @@
 and lay the node tree out: each venue anchors the upgrades that are worth buying there."""
 import json, math
 
-LIST_PER_V = [6, 3, 2, 3, 3, 4, 10, 10]               # listeners joining at each venue (v0 includes the free 누렁소)
+LIST_PER_V = [6, 3, 1, 3, 10, 9, 3, 4, 10, 10]        # listeners joining at each venue (v0 includes the free 누렁소)
 GROUPS = [  # key, members, venue, power per credited hit, credited hits per bar
     ('novice', 10, 0, 1, 2), ('metal', 4, 1, 25, 4), ('opera', 5, 2, 700, 3), ('orch', 6, 3, 2e4, 4),
-    ('cheer', 6, 4, 6e5, 4), ('djembe', 3, 5, 2e7, 4), ('samul', 4, 6, 6e8, 4)]
+    ('court', 4, 4, 1.5e5, 4), ('comedy', 4, 5, 4e5, 4), ('cheer', 6, 6, 1.2e6, 4), ('djembe', 3, 7, 3e7, 4), ('samul', 4, 8, 8e8, 4)]
 PERF = [(g, v, pw, hb) for (g, n, v, pw, hb) in GROUPS for _ in range(n)]
 NV = len(LIST_PER_V)
-COUNTS = dict(moktak=20, sutra=8, incense=18, ear=16)
+COUNTS = dict(moktak=20, sutra=11, incense=18, ear=16)
 BAR, CLICK, END, END_WAIT = 2.4, 3, 1e68, 12
-PACE = 0.5   # overall speed: 0.5 = about a 5-minute run
+PACE = 0.46   # overall speed: 0.5 = about a 5-minute run
 
 def path():
     lv = [n for n in LIST_PER_V]; lv[0] -= 1                   # purchasable listeners per venue
@@ -116,7 +116,7 @@ def layout(order):
 
 if __name__ == '__main__':
     order = path()
-    lo, hi = 1.5, 12
+    lo, hi = 1.02, 12
     for _ in range(50):
         mid = (lo + hi) / 2
         final, t = simulate(order, mid)

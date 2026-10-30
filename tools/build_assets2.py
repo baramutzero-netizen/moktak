@@ -31,7 +31,7 @@ for k, fr in performers().items():
 for i, L in enumerate(LISTENERS):
     emit('L_' + L['key'], listener_frames(L), [400, 120, 160, 160],
          [('idle', 0, 0), ('blink', 1, 1), ('ear_in', 2, 2), ('ear_out', 3, 3)], 'listeners/%02d_' % i if False else 'listeners/')
-sut = ['sut0', 'sut1', 'sut2', 'sut3', 'sut4', 'sut5', 'pur', 'grn', 'red']
+sut = ['sut0', 'sut1', 'sut2', 'sut3', 'sut4', 'grn', 'blue', 'pur', 'red', 'org', 'teal', 'sut5']   # one ink colour per sutra tier (12)
 emit('sutra', [glyph_image(g, c) for c in sut for g in range(4)], sub='fx/')
 emit('karma', [karma_image(0), karma_image(1)], [150, 150], [('twinkle', 0, 1)], 'fx/')
 emit('halo', [halo_image()], sub='fx/'); emit('lotus', [lotus_image()], sub='fx/')
